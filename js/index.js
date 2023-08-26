@@ -7,7 +7,8 @@ window.onload=function(){
             point:0,
             prize:{},
             FirstTimeFlag:0,
-            remainPlay:1
+            remainPlay:1,
+            showAutoBtn:false
         },
         methods:{
             getPrize(){ // 完成實作
@@ -92,6 +93,32 @@ window.onload=function(){
                     this.getPrize();
                     this.getStatus();
                 }
+            },
+            autoScratch(){
+                if(vm.remain<=0)
+                    alert("剩餘次數不足！")
+                else if(confirm("確認刮開？")){
+                    this.scratch();
+                    var canvas = document.getElementById("canvas");
+                    var bbx = canvas.getBoundingClientRect(); // 避免失真
+                    var ctx = canvas.getContext("2d");
+                    var cx=-20;
+                    var cy=0;
+                    const timer = setInterval(function(){
+                        var w = 25;	
+                        var h = 25;
+                        cx+=25;
+                        var x = (cx)*(canvas.width/bbx.width); 
+                        var y = (cy)*(canvas.height/bbx.height);
+                        console.log(x,y)
+                        if(x>300) {
+                            cx=-20;
+                            cy+=50;
+                        }
+                        if(y>155) clearInterval(timer)
+                        ctx.clearRect(x,y,w,h);
+                    },60)       
+                }
             }
         }
     })
@@ -109,42 +136,26 @@ window.onload=function(){
             ctx.fillStyle='rgb(206, 206, 206)';
             ctx.fillRect(0,0,canvas.width,canvas.height)
         }
-        canvas.onmousedown=function(){
-            if(vm.remain<=0)
-                alert("剩餘次數不足！")
-            else{
-                if(vm.FirstTimeFlag==0) vm.scratch(); // 執行紀錄
-                vm.FirstTimeFlag=1;
-                canvas.onmousemove=function(e){
-                    var w = 15;			// 清除區域的寬度
-                    var h = 15;			// 清除區域的高度
-                    var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
-                    var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
-                    console.log(x,y)
-                    ctx.clearRect(x,y,w,h);
-                }
-                canvas.onmouseup=function(){
-                    canvas.onmousemove=null;
-                }
-            }
-        }
         if(navigator.userAgent.includes("Mobile")){
-            canvas.ontouchstart=function(){
+            vm.showAutoBtn=true;
+        }
+        else{
+            console.log("go")
+            canvas.onmousedown=function(){
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
                 else{
                     if(vm.FirstTimeFlag==0) vm.scratch(); // 執行紀錄
                     vm.FirstTimeFlag=1;
-                    canvas.ontouchmove=function(e){
+                    canvas.onmousemove=function(e){
                         var w = 15;			// 清除區域的寬度
                         var h = 15;			// 清除區域的高度
                         var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
                         var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
-                        console.log(x,y)
                         ctx.clearRect(x,y,w,h);
                     }
-                    canvas.ontouchend=function(){
-                        canvas.ontouchmove=null;
+                    canvas.onmouseup=function(){
+                        canvas.onmousemove=null;
                     }
                 }
             }
@@ -153,7 +164,4 @@ window.onload=function(){
     vm.getStatus();
     vm.getPrize();
 }
-
-
-console.log(navigator.userAgent)
 

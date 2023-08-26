@@ -44,6 +44,14 @@ body{
     background-position: center;
     background-size: 150%;
 }
+.autoBtn{
+    width: 100%;
+    border: 1px solid white;
+}
+.autoBtn:hover{
+    cursor: pointer;
+    background: rgba(255,255,255,0.2);
+}
 .list{
     width: 340px;
     height: 200px;

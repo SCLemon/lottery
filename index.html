@@ -25,6 +25,7 @@
         <canvas class="canvas" id="canvas"></canvas>
         <div class="list">
             <div class="list-h">
+                <div class="autoBtn" @click="autoScratch()" v-if="showAutoBtn">自動刮開</div>
                 <div class="point">累積點數：{{point}}</div>
                 <h1>任務列表</h1>
                 <div class="remain">剩餘次數：{{remain}}</div>
