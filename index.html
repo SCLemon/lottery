@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/gambler-luck-svgrepo-com.svg">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/vue.js"></script>
+    <script src="js/index.js"></script>
+    <title>Scratch</title>
+</head>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+</style>
+<body>
+    <div id="app" class="main" v-cloak>
+        <div class="header">
+            <h1>每日刮刮樂</h1>
+            <p>期許每一天的你都完成了目標</p>
+            <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changePrize()"></i>
+        </div>
+        <canvas class="canvas" id="canvas"></canvas>
+        <div class="list">
+            <div class="list-h">
+                <div class="point">累積點數：{{point}}</div>
+                <h1>任務列表</h1>
+                <div class="remain">剩餘次數：{{remain}}</div>
+            </div>
+            <div class="list-c" v-for="obj in mission">
+                <div>{{obj.name}}</div>
+                <div>{{obj.content}}</div>
+                <div id="btn" class="btn" @click="obj.checked?'':submit(obj.id)">{{obj.checked?"已完成":"發送完成"}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://kit.fontawesome.com/026fbb8b51.js" crossorigin="anonymous"></script>
+</html>
