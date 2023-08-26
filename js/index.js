@@ -128,8 +128,7 @@ window.onload=function(){
                 }
             }
         }
-        if(navigator.userAgent.includes("mobile")){
-            console.log("mobile")
+        if(navigator.userAgent.includes("Mobile")){
             canvas.ontouchstart=function(){
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
@@ -156,5 +155,5 @@ window.onload=function(){
 }
 
 
-
+console.log(navigator.userAgent)
 
