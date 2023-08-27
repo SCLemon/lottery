@@ -14,5 +14,5 @@
   <li>抽獎機率加成</li>
   <li>前後端雙層安全驗證</li>
 </ul>
-WEB Link:<a href='https://sclemon.github.io/lottery/'>點擊連結</a>
+WEB :<a href='https://sclemon.github.io/lottery/'>link</a>
 
