@@ -14,9 +14,37 @@ window.onload=function(){
             changeEnabled:false,
             autoEnabled:false,
             openID:0,
-            prob:0
+            prob:0,
+            mainControl:false,
+            key:''
         },
         methods:{
+            getPermission(){ // 完成實作
+                var url='https://script.google.com/macros/s/AKfycbxZm-OQYqwepnYdHDNRTweh_xWw2TE_DFhX1waipHmANvwsdwH9lR_je-btc6GARyt0oQ/exec';
+                var formData=new FormData();
+                if(localStorage.getItem('Permission')==null) var vr = prompt('首次驗證：');
+                else var vr= localStorage.getItem('Permission');
+                formData.append("verify",vr);
+                var config={
+                    method:"post",
+                    body:formData,
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    if(resp.status=='success') {
+                        localStorage.setItem('Permission',resp.key)
+                        this.mainControl=true;
+                        this.key=resp.key;
+                    }
+                    else{
+                        alert('No Permission')
+                        this.mainControl=false;
+                        this.key=resp.key;
+                    }
+                })
+            },
             getPrize(){ // 完成實作
                 var refresh = document.getElementById("refresh")
                 const url='https://script.google.com/macros/s/AKfycbyQpaMQ7qdN7ZvyxvKaIJs9CeHZcxYmUlQ2iPOyJCO0IH0NwAD524gPWovEw3ncxGgX/exec';
@@ -50,11 +78,12 @@ window.onload=function(){
             },
             submit(id){ // 完成實作
                 var btn = document.getElementsByClassName("btn")[id-1];
-                if(confirm("確認發送？")){
+                if(confirm("確認發送？") && this.mainControl){
                     btn.innerText="發送中";
                     const url = 'https://script.google.com/macros/s/AKfycbwyHnA3Pk9W9iw_4Nt9fDTnmuRtKhqPqCBAOA-VsRT4fE3nvpMMO18-fICvLPEhC7-pOg/exec';
                     var formData=new FormData();
                     formData.append("id",id);
+                    formData.append('key',this.key)
                     var config={
                         method:"post",
                         body:formData,
@@ -81,6 +110,7 @@ window.onload=function(){
                 formData.append("id",this.prize.id);
                 formData.append("title",this.prize.title);
                 formData.append("content",this.prize.content)
+                formData.append('key',this.key);
                 var config={
                     method:"post",
                     body:formData,
@@ -105,7 +135,7 @@ window.onload=function(){
             autoScratch(){ // 完成實作
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
-                else if(confirm("確認刮開？")){
+                else if(confirm("確認刮開？") && this.mainControl){
                     this.autoEnabled=false;
                     this.scratch();
                     var canvas = document.getElementById("canvas");
@@ -154,12 +184,13 @@ window.onload=function(){
             },
             exchange(id,content,price){ // 完成實作
                 var sd = document.getElementsByClassName('send')[id-1];
-                if(confirm('確認兌換？')){
+                if(confirm('確認兌換？') && this.mainControl){
                     sd.innerText='傳送中～'
                     const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec';
                     var formData=new FormData();
                     formData.append("content",content);
                     formData.append("price",price)
+                    formData.append('key',this.key);
                     var config={
                         method:"post",
                         body:formData,
@@ -180,7 +211,7 @@ window.onload=function(){
                     })
                 }
             },
-            openList(){
+            openList(){ // 完成實作
                 var barList =document.getElementById("bl");
                 var bars =document.getElementById("bars");
                 barList.classList.toggle('showBl')
@@ -224,7 +255,7 @@ window.onload=function(){
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
                 else{
-                    if(vm.FirstTimeFlag==0) vm.scratch(); // 執行紀錄
+                    if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
                     vm.FirstTimeFlag=1;
                     canvas.onmousemove=function(e){
                         var w = 15;			// 清除區域的寬度
@@ -242,6 +273,7 @@ window.onload=function(){
         vm.changeEnabled=true; // 開啟刷新功能
         vm.autoEnabled=true; // 開啟自動刮開功能
     }
+    vm.getPermission();
     vm.getStatus();
     vm.getPrize();
     vm.getHistory();
