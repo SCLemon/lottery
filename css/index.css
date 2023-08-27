@@ -177,8 +177,8 @@ body{
     width:150px;
 }
 .img{
-    width: 50%;
-    height: 100%;
+    width: 70px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -190,7 +190,14 @@ body{
 .name{
     width: 50%;
     height: 100%;
-    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.name>p{
+    font-size: 12px;
+    line-height: 1.75;
 }
 .header{
     width: 340px;

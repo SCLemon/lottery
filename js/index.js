@@ -13,7 +13,8 @@ window.onload=function(){
             showAutoBtn:false,
             changeEnabled:false,
             autoEnabled:false,
-            openID:0
+            openID:0,
+            prob:0
         },
         methods:{
             getPrize(){ // 完成實作
@@ -44,6 +45,7 @@ window.onload=function(){
                     this.remain=resp.remain;
                     this.mission=resp.mission;
                     this.point=resp.point;
+                    this.prob=(resp.prob*100).toFixed(3)
                 })
             },
             submit(id){ // 完成實作
