@@ -178,7 +178,17 @@ window.onload=function(){
                     })
                 }
             },
+            openList(){
+                var barList =document.getElementById("bl");
+                var bars =document.getElementById("bars");
+                barList.classList.toggle('showBl')
+                bars.classList.toggle("showB");
+            },
             openFrame(openID){ // 完成實作
+                var barList =document.getElementById("bl");
+                var bars =document.getElementById("bars");
+                barList.classList.remove('showBl')
+                bars.classList.remove("showB");
                 this.openID=openID;
             },
             closeFrame(openID){ // 完成實作

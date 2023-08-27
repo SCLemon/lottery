@@ -66,8 +66,8 @@
                 </div>
             </div>
         </div>
-        <i class="fa-solid fa-bars bars"></i>
-        <div class="bar-list">
+        <i class="fa-solid fa-bars bars" id="bars" @click="openList()"></i>
+        <div class="bar-list" id="bl">
             <div class="bl-c" @click="openFrame(0)">遊玩遊戲</div>
             <div class="bl-c" @click="openFrame(1)">歷史紀錄</div>
             <div class="bl-c" @click="openFrame(2)">兌換獎品</div>

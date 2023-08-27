@@ -169,13 +169,12 @@ body{
 }
 .bars:hover{
     cursor: pointer;
-    width: 150px;
 }
-.bars:hover + .bar-list{
+.showBl{
     right:0;
 }
-.bar-list:hover{
-    right: 0;
+.showB{
+    width:150px;
 }
 .img{
     width: 50%;
