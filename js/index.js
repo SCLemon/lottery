@@ -6,9 +6,14 @@ window.onload=function(){
             remain:0,
             point:0,
             prize:{},
+            history:[],
+            commodity:[],
             FirstTimeFlag:0,
             remainPlay:1,
-            showAutoBtn:false
+            showAutoBtn:false,
+            changeEnabled:false,
+            autoEnabled:false,
+            openID:0
         },
         methods:{
             getPrize(){ // 完成實作
@@ -38,7 +43,7 @@ window.onload=function(){
                 .then(resp=>{
                     this.remain=resp.remain;
                     this.mission=resp.mission;
-                    this.point=resp.point
+                    this.point=resp.point;
                 })
             },
             submit(id){ // 完成實作
@@ -82,22 +87,24 @@ window.onload=function(){
                 fetch(url,config)
                 .then(resp=>resp.text())
                 .then(resp=>{
-                    // do nothing
+                    this.getHistory();
                 })
             },
             changePrize(){ // 完成實作
                 if(confirm("刷新刮刮卡？")){
-                    vm.FirstTimeFlag=0;
+                    this.changeEnabled=false;
+                    this.FirstTimeFlag=0;
                     var refresh = document.getElementById("refresh");
                     refresh.classList.add("fa-spin");
                     this.getPrize();
                     this.getStatus();
                 }
             },
-            autoScratch(){
+            autoScratch(){ // 完成實作
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
                 else if(confirm("確認刮開？")){
+                    this.autoEnabled=false;
                     this.scratch();
                     var canvas = document.getElementById("canvas");
                     var bbx = canvas.getBoundingClientRect(); // 避免失真
@@ -110,7 +117,6 @@ window.onload=function(){
                         cx+=25;
                         var x = (cx)*(canvas.width/bbx.width); 
                         var y = (cy)*(canvas.height/bbx.height);
-                        console.log(x,y)
                         if(x>300) {
                             cx=-20;
                             cy+=50;
@@ -119,14 +125,76 @@ window.onload=function(){
                         ctx.clearRect(x,y,w,h);
                     },60)       
                 }
+            },
+            getHistory(){ // 完成實作
+                const url='https://script.google.com/macros/s/AKfycbyjFrond2ynqVgfhg8CoD0mggYMgZ-2qnqCdEnHNZlm6wFHc-_v6Yy2FonLySQQUGgo/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.history = resp;
+                })
+            },
+            getCommodity(){ // 完成實作
+                const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.commodity = resp;
+                })
+            },
+            exchange(id,content,price){ // 完成實作
+                var sd = document.getElementsByClassName('send')[id-1];
+                if(confirm('確認兌換？')){
+                    sd.innerText='傳送中～'
+                    const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec';
+                    var formData=new FormData();
+                    formData.append("content",content);
+                    formData.append("price",price)
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='failed') {
+                            alert('兌換失敗');
+                            sd.innerText='兌換失敗'
+                        }
+                        else{
+                            sd.innerText='兌換成功'
+                            alert("兌換成功")
+                            this.point=resp;
+                        }
+                    })
+                }
+            },
+            openFrame(openID){ // 完成實作
+                this.openID=openID;
+            },
+            closeFrame(openID){ // 完成實作
+                this.openID=openID;
+            },
+            alert(msg){
+                alert(msg);
             }
         }
     })
-    function draw(prize){
+    function draw(prize){ // 完成實作
         var canvas = document.getElementById("canvas");
         var bbx = canvas.getBoundingClientRect(); // 避免失真
         if (canvas.getContext) {
             var ctx = canvas.getContext("2d");
+            ctx.clearRect(0,0,canvas.width,canvas.height) // 重置畫布
             ctx.font = "20px sans-serif"
             ctx.textAlign="center"
             ctx.fillText(prize.title,150,60)
@@ -140,7 +208,6 @@ window.onload=function(){
             vm.showAutoBtn=true;
         }
         else{
-            console.log("go")
             canvas.onmousedown=function(){
                 if(vm.remain<=0)
                     alert("剩餘次數不足！")
@@ -160,8 +227,12 @@ window.onload=function(){
                 }
             }
         }
+        vm.changeEnabled=true; // 開啟刷新功能
+        vm.autoEnabled=true; // 開啟自動刮開功能
     }
     vm.getStatus();
     vm.getPrize();
+    vm.getHistory();
+    vm.getCommodity();
 }
 

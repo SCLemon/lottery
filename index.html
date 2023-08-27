@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="js/vue.js"></script>
     <script src="js/index.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="ico/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="ico/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="ico/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="ico/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="ico/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="ico/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="ico/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="ico/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="ico/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="ico/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="ico/favicon-16x16.png">
+    <link rel="manifest" href="ico/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="ico/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <title>Scratch</title>
 </head>
 <style>
@@ -17,15 +34,59 @@
 </style>
 <body>
     <div id="app" class="main" v-cloak>
+        <div class="frame" v-if="openID!=0">
+            <i class="fa-sharp fa-solid fa-xmark xmark" @click="closeFrame(0)"></i>
+            <div class="history" v-if="openID==1">
+                <h1>歷史紀錄</h1>
+                <div class="history-list">
+                    <div>
+                        <div class="level-n">特徵值</div>
+                        <div class="level">品級</div>
+                        <div class="level-c">內容</div>
+                    </div>
+                    <div v-for="obj in history">
+                        <div class="level-n">{{obj.id}}</div>
+                        <div class="level">{{obj.title}}</div>
+                        <div class="level-c">{{obj.content}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="buy" v-if="openID==2">
+                <h1>兌換獎品</h1>
+                <div class="buy-all">
+                    <div class="buy-c" v-for="obj in commodity">
+                        <div class="buy-img">
+                            <img :src="obj.img" :alt="obj.content">
+                        </div>
+                        <div class="detail">
+                            <h2>售價：{{obj.price}}</h2>
+                            <div class="send" @click="point>=obj.price?exchange(obj.id,obj.content,obj.price):alert('兌換點數不足')">兌換獎品</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <i class="fa-solid fa-bars bars"></i>
+        <div class="bar-list">
+            <div class="bl-c" @click="openFrame(0)">遊玩遊戲</div>
+            <div class="bl-c" @click="openFrame(1)">歷史紀錄</div>
+            <div class="bl-c" @click="openFrame(2)">兌換獎品</div>
+            <div class="bl-p">
+                <div class="img">
+                    <img src="img/person.png" alt="" srcset="">
+                </div>
+                <div class="name">小均均</div>
+            </div>
+        </div>
         <div class="header">
             <h1>每日刮刮樂</h1>
             <p>期許每一天的你都完成了目標</p>
-            <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changePrize()"></i>
+            <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changeEnabled?changePrize():''"></i>
         </div>
         <canvas class="canvas" id="canvas"></canvas>
         <div class="list">
             <div class="list-h">
-                <div class="autoBtn" @click="autoScratch()" v-if="showAutoBtn">自動刮開</div>
+                <div class="autoBtn" @click="autoEnabled?autoScratch():''" v-if="showAutoBtn">自動刮開</div>
                 <div class="point">累積點數：{{point}}</div>
                 <h1>任務列表</h1>
                 <div class="remain">剩餘次數：{{remain}}</div>
@@ -33,7 +94,7 @@
             <div class="list-c" v-for="obj in mission">
                 <div>{{obj.name}}</div>
                 <div>{{obj.content}}</div>
-                <div id="btn" class="btn" @click="obj.checked?'':submit(obj.id)">{{obj.checked?"已完成":"發送完成"}}</div>
+                <div id="btn" class="btn" @click="obj.checked?'':submit(obj.id)">{{obj.checked?"已完成":"確認完成"}}</div>
             </div>
         </div>
     </div>
