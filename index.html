@@ -40,7 +40,7 @@
                 <h1>歷史紀錄</h1>
                 <div class="history-list">
                     <div>
-                        <div class="level-n">特徵值</div>
+                        <div class="level-n">編號</div>
                         <div class="level">品級</div>
                         <div class="level-c">內容</div>
                     </div>
@@ -65,20 +65,32 @@
                     </div>
                 </div>
             </div>
+            <div class="history" v-if="openID==3">
+                <h1>兌換紀錄</h1>
+                <div class="history-list">
+                    <div>
+                        <div class="level-n">獎品</div>
+                        <div class="level">價格</div>
+                        <div class="level-c">狀態</div>
+                    </div>
+                    <div v-for="obj in buyHistory">
+                        <div class="level-n">{{obj.content}}</div>
+                        <div class="level">{{obj.price}}</div>
+                        <div class="level-c">{{obj.status}}</div>
+                    </div>
+                </div>
+            </div>
         </div>
         <i class="fa-solid fa-bars bars" id="bars" @click="openList()"></i>
         <div class="bar-list" id="bl">
             <div class="bl-c" @click="openFrame(0)">遊玩遊戲</div>
             <div class="bl-c" @click="openFrame(1)">歷史紀錄</div>
             <div class="bl-c" @click="openFrame(2)">兌換獎品</div>
+            <div class="bl-c" @click="openFrame(3)">兌換紀錄</div>
             <div class="bl-p">
-                <div class="img">
-                    <img src="img/person.png" alt="" srcset="">
-                </div>
-                <div class="name">
-                    <p>小均均</p>
-                    <p>機率：{{prob}}</p>
-                </div>
+                <p>頭獎機率：{{prob}}%</p>
+                <p>永久加成：{{fadded}}/50</p>
+                <p>系統加成：{{added}}/100</p>
             </div>
         </div>
         <div class="header">

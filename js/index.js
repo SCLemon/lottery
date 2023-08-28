@@ -8,6 +8,7 @@ window.onload=function(){
             prize:{},
             history:[],
             commodity:[],
+            buyHistory:[],
             FirstTimeFlag:0,
             remainPlay:1,
             showAutoBtn:false,
@@ -15,6 +16,8 @@ window.onload=function(){
             autoEnabled:false,
             openID:0,
             prob:0,
+            fadded:0,
+            added:0,
             mainControl:false,
             key:''
         },
@@ -73,7 +76,9 @@ window.onload=function(){
                     this.remain=resp.remain;
                     this.mission=resp.mission;
                     this.point=resp.point;
-                    this.prob=(resp.prob*100).toFixed(3)
+                    this.prob=(resp.prob*100).toFixed(5);
+                    this.added=resp.added;
+                    this.fadded=resp.fadded;
                 })
             },
             submit(id){ // 完成實作
@@ -170,6 +175,19 @@ window.onload=function(){
                     this.history = resp;
                 })
             },
+            getBuyHistory(){
+                const url='https://script.google.com/macros/s/AKfycbxuVL3O3Zwj6WVDIF0QvqPh2jgWTH0nCuDftA81n6tv7ROmPa1Gu7XKM_dTuLaex1RLww/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.buyHistory = resp;
+                })
+            }
+            ,
             getCommodity(){ // 完成實作
                 const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec'
                 var config={
@@ -278,5 +296,6 @@ window.onload=function(){
     vm.getPrize();
     vm.getHistory();
     vm.getCommodity();
+    vm.getBuyHistory();
 }
 

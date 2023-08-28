@@ -17,6 +17,7 @@ body{
     width: 90%;
     height: 90vh;
     background-color: rgba(255,255,255,0.8);
+    overflow-y: scroll;
     z-index:1000;
 }
 .xmark{
@@ -155,17 +156,13 @@ body{
     background-color: rgba(0,0,0,0.5);
 }
 .bl-p{
-    position: absolute;
     width: 100%;
     height: 75px;
-    bottom: 55px;
-    left: 0;
-    line-height: 75px;
-    text-align: center;
+    line-height: 1.5;
+    padding-left: 10px;
+    margin-top: 10px;
     color: white;
-    font-size: 20px;
-    display: flex;
-    justify-content: space-evenly;
+    font-size: 12px;
 }
 .bars:hover{
     cursor: pointer;
@@ -175,29 +172,6 @@ body{
 }
 .showB{
     width:150px;
-}
-.img{
-    width: 70px;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.img>img{
-    width: 70%;
-    height: 70%;
-}
-.name{
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.name>p{
-    font-size: 12px;
-    line-height: 1.75;
 }
 .header{
     width: 340px;
