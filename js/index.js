@@ -11,7 +11,6 @@ window.onload=function(){
             buyHistory:[],
             FirstTimeFlag:0,
             remainPlay:1,
-            showAutoBtn:false,
             changeEnabled:false,
             autoEnabled:false,
             openID:0,
@@ -21,6 +20,8 @@ window.onload=function(){
             mainControl:false,
             key:'',
             showAddListBtn:false,
+            stageRemain:[],
+            isDouble:false,
         },
         methods:{
             getPermission(){ // 完成實作
@@ -118,6 +119,7 @@ window.onload=function(){
                 formData.append("title",this.prize.title);
                 formData.append("content",this.prize.content)
                 formData.append('key',this.key);
+                formData.append('isDouble',this.isDouble);
                 var config={
                     method:"post",
                     body:formData,
@@ -126,17 +128,19 @@ window.onload=function(){
                 fetch(url,config)
                 .then(resp=>resp.text())
                 .then(resp=>{
+                    this.isDouble=false;
                     this.getHistory();
                 })
             },
-            changePrize(){ // 完成實作
-                if(confirm("刷新刮刮卡？")){
+            changePrize(flag){ // 完成實作
+                if(flag=='auto'?true:confirm("刷新刮刮卡？")){
                     this.changeEnabled=false;
                     this.FirstTimeFlag=0;
                     var refresh = document.getElementById("refresh");
                     refresh.classList.add("fa-spin");
                     this.getPrize();
                     this.getStatus();
+                    this.getStage();
                 }
             },
             autoScratch(){ // 完成實作
@@ -282,6 +286,96 @@ window.onload=function(){
                         }
                     })
                 }
+            },
+            getStage(){ // 完成實作
+                const url='https://script.google.com/macros/s/AKfycbwDnDoZRI9cq4Ewg0AFBhtcYlnJdSjQ_Sq_ZQqGqqVqioFTIT-hXrSxp34Fu5hrq-qP/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.stageRemain = resp;
+                })
+            },
+            useStage(id){
+                if(this.stageRemain['stage'+id]>0?confirm('確認使用道具？'):alert('道具不足')){
+                    alert('道具校驗中，請稍候！');
+                    const url='https://script.google.com/macros/s/AKfycbwDnDoZRI9cq4Ewg0AFBhtcYlnJdSjQ_Sq_ZQqGqqVqioFTIT-hXrSxp34Fu5hrq-qP/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('id',id);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.getStage();
+                            this.use(id);
+                        }
+                        else console.log('道具不足，使用失敗');
+                    })
+                }
+                
+            },
+            use(id){
+                if(id==1){ // 機率上升
+                    alert('本次刮刮卡機率大幅上升（請勿刷新刮刮卡）');
+                    const url='https://script.google.com/macros/s/AKfycbwL7u3ivlEgsBPEyUc4lTh9FbE9ute7H6kqQU17jAL1tCtURM2t1VHR1jEkz7ithaPO/exec'
+                    var config={
+                        method:"get",
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        this.changePrize('auto');
+                    })
+                }
+                else if(id==2){ // 透視卡牌
+                    alert('成功使用透視卡牌，請等待3秒後再刷新');
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    setTimeout(() => {
+                        if(confirm('是否獲取本次獎勵？')) {
+                            this.scratch();
+                            this.changePrize('auto');
+                        }
+                    }, 3000);
+                }
+                else if(id==3){ // 雙倍獎勵
+                    this.isDouble=true;
+                    alert('獲得雙倍獎勵機會（可刷新刮刮卡）');
+                }
+                else if(id==4){ // 再抽一次
+                    const url='https://script.google.com/macros/s/AKfycbwmsRULSHcethoqlnfgbc5zz_gXY7fJ3Rs8AbepwTCfCTiysuHUf3opL6XsYYIA53NX/exec';
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.getStatus();
+                            this.changePrize('auto');
+                        }
+                        else alert('使用成功，獲得一次額外抽獎機會!');
+                    })
+                }
+                else if(id==5){ // 抽取建議
+                    if(this.prize.id<5) alert('六等獎（不含）以下獎勵，建議重新抽取');
+                    else alert('六等獎（含）以上獎勵，建議抽取'); 
+                }
             }
         }
     })
@@ -299,27 +393,22 @@ window.onload=function(){
             ctx.globalCompositeOperation = 'source-over'
             ctx.fillStyle='rgb(206, 206, 206)';
             ctx.fillRect(0,0,canvas.width,canvas.height)
-        }
-        if(navigator.userAgent.includes("Mobile")){
-            vm.showAutoBtn=true;
-        }
-        else{
-            canvas.onmousedown=function(){
-                if(vm.remain<=0)
-                    alert("剩餘次數不足！")
-                else{
-                    if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
-                    vm.FirstTimeFlag=1;
-                    canvas.onmousemove=function(e){
-                        var w = 15;			// 清除區域的寬度
-                        var h = 15;			// 清除區域的高度
-                        var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
-                        var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
-                        ctx.clearRect(x,y,w,h);
-                    }
-                    canvas.onmouseup=function(){
-                        canvas.onmousemove=null;
-                    }
+        }   
+        canvas.onmousedown=function(){
+            if(vm.remain<=0)
+                alert("剩餘次數不足！")
+            else{
+                if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
+                vm.FirstTimeFlag=1;
+                canvas.onmousemove=function(e){
+                    var w = 15;			// 清除區域的寬度
+                    var h = 15;			// 清除區域的高度
+                    var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
+                    var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
+                    ctx.clearRect(x,y,w,h);
+                }
+                canvas.onmouseup=function(){
+                    canvas.onmousemove=null;
                 }
             }
         }
@@ -332,5 +421,6 @@ window.onload=function(){
     vm.getHistory();
     vm.getCommodity();
     vm.getBuyHistory();
+    vm.getStage();
 }
 

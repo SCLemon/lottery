@@ -101,7 +101,29 @@
         <canvas class="canvas" id="canvas"></canvas>
         <div class="list">
             <div class="list-h">
-                <div class="autoBtn" @click="autoEnabled?autoScratch():''" v-if="showAutoBtn">自動刮開</div>
+                <div class="autoBtn" @click="autoEnabled?autoScratch():''">自動刮開</div>
+                <div class="stageList">
+                    <div class="stage" @click="useStage(1)">
+                        <div class="stageRemain">{{stageRemain.stage1}}</div>
+                        <img src="img/stage1.png" alt="機率提升" title="機率提升">
+                    </div>
+                    <div class="stage" @click="useStage(2)">
+                        <div class="stageRemain">{{stageRemain.stage2}}</div>
+                        <img src="img/stage2.png" alt="透視卡牌" title="透視卡牌">
+                    </div>
+                    <div class="stage" @click="useStage(3)">
+                        <div class="stageRemain">{{stageRemain.stage3}}</div>
+                        <img src="img/stage3.png" alt="獎勵翻倍" title="獎勵翻倍">
+                    </div>
+                    <div class="stage" @click="useStage(4)">
+                        <div class="stageRemain">{{stageRemain.stage4}}</div>
+                        <img src="img/stage4.png" alt="再抽一次" title="再抽一次">
+                    </div>
+                    <div class="stage" @click="useStage(5)">
+                        <div class="stageRemain">{{stageRemain.stage5}}</div>
+                        <img src="img/stage5.png" alt="抽取建議" title="抽取建議">
+                    </div>
+                </div>
                 <div class="point">累積點數：{{point}}</div>
                 <h1>任務列表</h1>
                 <div class="remain">剩餘次數：{{remain}}</div>

@@ -222,6 +222,7 @@ body{
 .autoBtn{
     width: 100%;
     margin-top: 10px;
+    margin-bottom: 5px;
     border: 1px solid white;
 }
 .autoBtn:hover{
@@ -238,6 +239,44 @@ body{
     font-size: 20px;
     border-bottom: 1px solid gray;
     position: relative;
+}
+.stageList{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.stage{
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: rgba(255,255,255,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.stageRemain{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 12px;
+    top:-5px;
+    right: -5px;
+}
+.stage>img{
+    width:50px;
+    height: 50px;
+}
+.stage:hover{
+    cursor: pointer;
+    box-shadow: 1px 1px 3px gray;
 }
 .remain{
     position: absolute;
