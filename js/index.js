@@ -347,6 +347,7 @@ window.onload=function(){
                             this.scratch();
                             this.changePrize('auto');
                         }
+                        else this.changePrize('auto');
                     }, 3000);
                 }
                 else if(id==3){ // 雙倍獎勵
@@ -366,10 +367,11 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=='success'){
+                            alert('使用成功，獲得一次額外抽獎機會!');
                             this.getStatus();
                             this.changePrize('auto');
                         }
-                        else alert('使用成功，獲得一次額外抽獎機會!');
+                        else alert('使用失敗，請重新嘗試！');
                     })
                 }
                 else if(id==5){ // 抽取建議
