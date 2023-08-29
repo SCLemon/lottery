@@ -111,6 +111,7 @@
                 <div>{{obj.content}}</div>
                 <div id="btn" class="btn" @click="obj.checked?'':submit(obj.id)">{{obj.checked?"已完成":"確認完成"}}</div>
             </div>
+            <div class="addList" v-if='showAddListBtn' @click="addList()"><i class="fa-solid fa-plus"></i></div>
         </div>
     </div>
 </body>

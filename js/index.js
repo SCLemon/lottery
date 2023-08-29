@@ -19,7 +19,8 @@ window.onload=function(){
             fadded:0,
             added:0,
             mainControl:false,
-            key:''
+            key:'',
+            showAddListBtn:false,
         },
         methods:{
             getPermission(){ // 完成實作
@@ -79,6 +80,7 @@ window.onload=function(){
                     this.prob=(resp.prob*100).toFixed(5);
                     this.added=resp.added;
                     this.fadded=resp.fadded;
+                    this.showAddListBtn=resp.mission.length<5;
                 })
             },
             submit(id){ // 完成實作
@@ -175,7 +177,7 @@ window.onload=function(){
                     this.history = resp;
                 })
             },
-            getBuyHistory(){
+            getBuyHistory(){ // 完成實作
                 const url='https://script.google.com/macros/s/AKfycbxuVL3O3Zwj6WVDIF0QvqPh2jgWTH0nCuDftA81n6tv7ROmPa1Gu7XKM_dTuLaex1RLww/exec'
                 var config={
                     method:"get",
@@ -207,7 +209,7 @@ window.onload=function(){
                     const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec';
                     var formData=new FormData();
                     formData.append("content",content);
-                    formData.append("price",price)
+                    formData.append("price",price);
                     formData.append('key',this.key);
                     var config={
                         method:"post",
@@ -225,6 +227,7 @@ window.onload=function(){
                             sd.innerText='兌換成功'
                             alert("兌換成功")
                             this.point=resp;
+                            this.getStatus();
                         }
                     })
                 }
@@ -247,6 +250,38 @@ window.onload=function(){
             },
             alert(msg){
                 alert(msg);
+            },
+            addList(){ // 完成實作
+                var content = prompt('新增每日任務:');
+                if(content!='' && content!=undefined && content.trim()!=''){
+                    const url='https://script.google.com/macros/s/AKfycbwCm1TtFOcOF3Qi8MuPEd5160ea38IV-gXgqiCeecde6vljHJeX_ceTxjSaTOxkoasQlA/exec';
+                    var formData=new FormData();
+                    formData.append("content",content);
+                    formData.append('key',this.key);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='failed') {
+                            alert('新增失敗');
+                        }
+                        else{
+                            alert("新增成功");
+                            this.mission.push({
+                                id:'5',
+                                name:'任務五',
+                                content:content,
+                                checked:false
+                            })
+                            this.showAddListBtn=false;
+                            this.getStatus();
+                        }
+                    })
+                }
             }
         }
     })

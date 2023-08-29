@@ -2,19 +2,21 @@ body{
     background-color: rgb(211, 240, 252);
 }
 .main{
-    width: 100vw;
-    height: 100vh;
+    width: 375px;
+    height: auto;
+    margin: 0 auto;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
     position: relative;
+    overflow-x:hidden;
 }
 .frame{
-    position: fixed;
+    position: absolute;
     top:5%;
     left: 5%;
-    width: 90%;
+    width: 337.5px;
     height: 90vh;
     background-color: rgba(255,255,255,0.8);
     overflow-y: scroll;
@@ -219,6 +221,7 @@ body{
 }
 .autoBtn{
     width: 100%;
+    margin-top: 10px;
     border: 1px solid white;
 }
 .autoBtn:hover{
@@ -227,7 +230,6 @@ body{
 }
 .list{
     width: 340px;
-    height: 200px;
     margin: 0 auto;
 }
 .list-h{
@@ -265,6 +267,16 @@ body{
 }
 .list-c>div:nth-child(2){
     width: 50%;
+}
+.addList{
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+}
+.addList:hover{
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.7);
 }
 .btn:hover{
     background: rgb(206, 206, 206);
