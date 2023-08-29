@@ -394,6 +394,7 @@ window.onload=function(){
             ctx.fillStyle='rgb(206, 206, 206)';
             ctx.fillRect(0,0,canvas.width,canvas.height)
         }   
+        // 電腦
         canvas.onmousedown=function(){
             if(vm.remain<=0)
                 alert("剩餘次數不足！")
@@ -409,6 +410,25 @@ window.onload=function(){
                 }
                 canvas.onmouseup=function(){
                     canvas.onmousemove=null;
+                }
+            }
+        }
+        // 手機或平板
+        canvas.ontouchstart=function(){
+            if(vm.remain<=0)
+                alert("剩餘次數不足！")
+            else{
+                if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
+                vm.FirstTimeFlag=1;
+                canvas.ontouchmove=function(e){
+                    var w = 15;			// 清除區域的寬度
+                    var h = 15;			// 清除區域的高度
+                    var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
+                    var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
+                    ctx.clearRect(x,y,w,h);
+                }
+                canvas.ontouchend=function(){
+                    canvas.ontouchmove=null;
                 }
             }
         }
