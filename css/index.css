@@ -13,9 +13,12 @@ body{
     overflow-x:hidden;
 }
 .frame{
-    position: absolute;
-    top:5%;
-    left: 5%;
+    position: fixed;
+    top:0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    margin: auto;
     width: 337.5px;
     height: 90vh;
     background-color: rgba(255,255,255,0.8);
@@ -106,6 +109,110 @@ body{
 }
 .buy-img>img{
     width: 100%;
+}
+.goal>h1{
+    font-size: 32px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 2;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.goal-bl{
+    width: 90%;
+    margin: 0 auto;
+    height: 70px;
+    margin-top: 10px;
+    background-color: rgba(255,266,255,0.4);
+    box-shadow: 3px 3px 10px gray;
+    border-radius: 9px;
+}
+.goalM{
+    width: 100%;
+    height: 85%;
+    display: flex;
+}
+.goalT{
+    width: 80%;
+    height: 100%;
+    border-right: 1px solid rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0,0,0,0.4);
+    position: relative;
+}
+.Tl{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    height: 10px;
+    font-size: 10px;
+}
+.goalB{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.8);
+    border-radius: 0 9px 0 0;
+}
+.goalB:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.1);
+    color: rgba(255,255,255,0.8);
+}
+.goalBB{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: orange;
+    color: white;
+    border-radius: 0 9px 0 0;
+}
+.goalBB:hover{
+    cursor: pointer;
+    background-color: rgba(255,165,0,0.8);
+    color: white;
+}
+.goalS{
+    width: 100%;
+    height: 15%;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+}
+.gsp{
+    display: flex;
+    width: 50%;
+    margin-left: -10px;
+}
+.goalS-l{
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(15% 0,100% 0, 85% 100%,0 100%);
+    transform: scale(1);
+}
+.goalS-ll{
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(15% 0,100% 0, 100% 100%,0 100%);
+    transform: scale(1);
+    border-radius: 0 0 12px 0;
+}
+.sp{
+    width: 1%;
+    height: 100%;
+    border-left: 1px solid rgba(0,0,0,0.1);
+    transform: rotateZ(48deg) scale(1.35);
+    margin-left: -5px;
 }
 .detail{
     width: 95%;

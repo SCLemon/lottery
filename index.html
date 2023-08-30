@@ -44,8 +44,8 @@
                         <div class="level">品級</div>
                         <div class="level-c">內容</div>
                     </div>
-                    <div v-for="obj in history">
-                        <div class="level-n">{{obj.id}}</div>
+                    <div v-for="(obj,key,index) in history">
+                        <div class="level-n">{{(key+1)}}</div>
                         <div class="level">{{obj.title}}</div>
                         <div class="level-c">{{obj.content}}</div>
                     </div>
@@ -80,6 +80,24 @@
                     </div>
                 </div>
             </div>
+            <div class="goal" v-if="openID==4">
+                <h1>成就系統</h1>
+                <div class="goal-bl" v-for="(obj,index) in goals">
+                    <div class="goalM">
+                        <div class="goalT">
+                            {{obj.title}} {{obj.limit}} 次
+                            <div class="Tl">{{obj.record}}/{{obj.limit}}</div>
+                        </div>
+                        <div :class="obj.status=='可兌換'?'goalBB':'goalB'" @click="obj.status=='可兌換'?goalSend(index):alert('尚未達成成就！')">{{obj.status}}</div>
+                    </div>
+                    <div class="goalS">
+                        <div v-for="index in obj.maxTime" class="gsp">
+                            <div :class="(index)==obj.maxTime?'goalS-ll':'goalS-l'" :style="((index)<=obj.times)?'background-color:red':''"></div>
+                            <div class="sp" v-if="(index)!=obj.maxTime"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <i class="fa-solid fa-bars bars" id="bars" @click="openList()"></i>
         <div class="bar-list" id="bl">
@@ -87,6 +105,7 @@
             <div class="bl-c" @click="openFrame(1)">歷史紀錄</div>
             <div class="bl-c" @click="openFrame(2)">兌換獎品</div>
             <div class="bl-c" @click="openFrame(3)">兌換紀錄</div>
+            <div class="bl-c" @click="openFrame(4)">成就系統</div>
             <div class="bl-p">
                 <p>頭獎機率：{{prob}}%</p>
                 <p>永久加成：{{fadded}}/50</p>

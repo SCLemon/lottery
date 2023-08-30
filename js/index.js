@@ -22,6 +22,7 @@ window.onload=function(){
             showAddListBtn:false,
             stageRemain:[],
             isDouble:false,
+            goals:[],
         },
         methods:{
             getPermission(){ // 完成實作
@@ -104,6 +105,7 @@ window.onload=function(){
                             alert("發送成功")
                             btn.innerText="已完成";
                             this.getStatus();
+                            this.getGoal();
                         }
                         else{
                             alert("發送失敗")
@@ -235,6 +237,43 @@ window.onload=function(){
                         }
                     })
                 }
+            },
+            getGoal(){
+                const url='https://script.google.com/macros/s/AKfycbzt2haMyqasS8Fe2bRE2m44g7ZliIygojZhX7pt7R71sTqEJjssAsuUjiJ5K-0pZLbObw/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.goals=resp;
+                })
+            },
+            goalSend(index){
+                alert('提交請求中，請稍候！');
+                const url = 'https://script.google.com/macros/s/AKfycbzt2haMyqasS8Fe2bRE2m44g7ZliIygojZhX7pt7R71sTqEJjssAsuUjiJ5K-0pZLbObw/exec'
+                var formData=new FormData();
+                formData.append("id",index);
+                formData.append('key',this.key);
+                var config={
+                    method:"post",
+                    body:formData,
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.text())
+                .then(resp=>{
+                    if(resp=='failed') {
+                        alert('兌換失敗');
+                    }
+                    else{
+                        alert("恭喜獲得："+resp);
+                        this.getStatus();
+                        this.getStage();
+                    }
+                    this.getGoal();
+                })
             },
             openList(){ // 完成實作
                 var barList =document.getElementById("bl");
@@ -397,43 +436,48 @@ window.onload=function(){
             ctx.fillRect(0,0,canvas.width,canvas.height)
         }   
         // 電腦
-        canvas.onmousedown=function(){
-            if(vm.remain<=0)
-                alert("剩餘次數不足！")
-            else{
-                if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
-                vm.FirstTimeFlag=1;
-                canvas.onmousemove=function(e){
-                    var w = 15;			// 清除區域的寬度
-                    var h = 15;			// 清除區域的高度
-                    var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
-                    var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
-                    ctx.clearRect(x,y,w,h);
-                }
-                canvas.onmouseup=function(){
-                    canvas.onmousemove=null;
+        if(navigator.userAgent.includes('Mobile')){
+
+        }
+        else{
+            canvas.onmousedown=function(){
+                if(vm.remain<=0)
+                    alert("剩餘次數不足！")
+                else{
+                    if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
+                    vm.FirstTimeFlag=1;
+                    canvas.onmousemove=function(e){
+                        var w = 15;			// 清除區域的寬度
+                        var h = 15;			// 清除區域的高度
+                        var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
+                        var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
+                        ctx.clearRect(x,y,w,h);
+                    }
+                    canvas.onmouseup=function(){
+                        canvas.onmousemove=null;
+                    }
                 }
             }
         }
         // 手機或平板
-        canvas.ontouchstart=function(){
-            if(vm.remain<=0)
-                alert("剩餘次數不足！")
-            else{
-                if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
-                vm.FirstTimeFlag=1;
-                canvas.ontouchmove=function(e){
-                    var w = 15;			// 清除區域的寬度
-                    var h = 15;			// 清除區域的高度
-                    var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
-                    var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
-                    ctx.clearRect(x,y,w,h);
-                }
-                canvas.ontouchend=function(){
-                    canvas.ontouchmove=null;
-                }
-            }
-        }
+        // canvas.ontouchstart=function(){
+        //     if(vm.remain<=0)
+        //         alert("剩餘次數不足！")
+        //     else{
+        //         if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
+        //         vm.FirstTimeFlag=1;
+        //         canvas.ontouchmove=function(e){
+        //             var w = 15;			// 清除區域的寬度
+        //             var h = 15;			// 清除區域的高度
+        //             var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
+        //             var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
+        //             ctx.clearRect(x,y,w,h);
+        //         }
+        //         canvas.ontouchend=function(){
+        //             canvas.ontouchmove=null;
+        //         }
+        //     }
+        // }
         vm.changeEnabled=true; // 開啟刷新功能
         vm.autoEnabled=true; // 開啟自動刮開功能
     }
@@ -444,5 +488,6 @@ window.onload=function(){
     vm.getCommodity();
     vm.getBuyHistory();
     vm.getStage();
+    vm.getGoal();
 }
 
