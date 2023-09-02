@@ -34,6 +34,15 @@
 </style>
 <body>
     <div id="app" class="main" v-cloak>
+        <div class="alertMsgBlock" v-if="alertMsgBlock">
+            <p v-if="alertOption=='check'"><i class="fa-solid fa-circle-check check"></i> {{alertMsg}}</p>
+            <p v-if="alertOption=='warn'"><i class="fa-solid fa-circle-exclamation warn"></i> {{alertMsg}}</p>
+            <p v-if="alertOption=='error'"><i class="fa-solid fa-circle-xmark error"></i> {{alertMsg}}</p>
+        </div>
+        <div class="bell">
+            <i  @click="toggleBell('開啟')"class="fa-regular fa-bell-slash" v-if="bellStatus==0"></i>
+            <i  @click="toggleBell('關閉')" class="fa-regular fa-bell" v-else></i>
+        </div>
         <div class="frame" v-if="openID!=0">
             <i class="fa-sharp fa-solid fa-xmark xmark" @click="closeFrame(0)"></i>
             <div class="history" v-if="openID==1">
@@ -60,7 +69,7 @@
                         </div>
                         <div class="detail">
                             <h2>售價：{{obj.price}}</h2>
-                            <div class="send" @click="point>=obj.price?exchange(obj.id,obj.content,obj.price):alert('兌換點數不足')">兌換獎品</div>
+                            <div class="send" @click="point>=obj.price?exchange(obj.id,obj.content,obj.price):alert('兌換點數不足','error')">兌換獎品</div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +97,7 @@
                             {{obj.title}} {{obj.limit}} 次
                             <div class="Tl">{{obj.record}}/{{obj.limit}}</div>
                         </div>
-                        <div :class="obj.status=='可兌換'?'goalBB':'goalB'" @click="obj.status=='可兌換'?goalSend(index):alert('尚未達成成就！')">{{obj.status}}</div>
+                        <div :class="obj.status=='可兌換'?'goalBB':'goalB'" @click="obj.status=='可兌換'?goalSend(index):alert('尚未達成成就！','error')">{{obj.status}}</div>
                     </div>
                     <div class="goalS">
                         <div v-for="index in obj.maxTime" class="gsp">

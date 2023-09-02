@@ -23,6 +23,11 @@ window.onload=function(){
             stageRemain:[],
             isDouble:false,
             goals:[],
+            bellStatus:0,
+            alertMsgBlock:false,
+            alertOption:'',
+            alertMsg:'',
+            alertTimer:0
         },
         methods:{
             getPermission(){ // 完成實作
@@ -45,13 +50,13 @@ window.onload=function(){
                         this.key=resp.key;
                     }
                     else{
-                        alert('No Permission')
+                        this.alert('No Permission','error');
                         this.mainControl=false;
                         this.key=resp.key;
                     }
                 })
             },
-            getPrize(){ // 完成實作
+            getPrize(option){ // 完成實作
                 var refresh = document.getElementById("refresh")
                 const url='https://script.google.com/macros/s/AKfycbyQpaMQ7qdN7ZvyxvKaIJs9CeHZcxYmUlQ2iPOyJCO0IH0NwAD524gPWovEw3ncxGgX/exec';
                 var config={
@@ -64,7 +69,7 @@ window.onload=function(){
                     this.point =resp.point;
                     this.prize =resp.prize;
                     refresh.classList.remove("fa-spin");
-                    draw(this.prize);
+                    draw(this.prize,option);
                 })
             },
             getStatus(){ // 完成實作
@@ -102,19 +107,20 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=="success"){
-                            alert("發送成功")
+                            this.alert("發送成功",'check')
                             btn.innerText="已完成";
                             this.getStatus();
                             this.getGoal();
                         }
                         else{
-                            alert("發送失敗")
+                            this.alert("發送失敗",'error')
                             btn.innerText="重新嘗試";
                         }
                     })
                 }
             },
             scratch(){  // 完成實作
+                this.alert('獎品紀錄中 (請勿刷新)','warn');
                 const url='https://script.google.com/macros/s/AKfycbyQpaMQ7qdN7ZvyxvKaIJs9CeHZcxYmUlQ2iPOyJCO0IH0NwAD524gPWovEw3ncxGgX/exec';
                 var formData=new FormData();
                 formData.append("id",this.prize.id);
@@ -132,22 +138,24 @@ window.onload=function(){
                 .then(resp=>{
                     this.isDouble=false;
                     this.getHistory();
+                    this.alert('獎品紀錄成功','check');
                 })
             },
             changePrize(flag){ // 完成實作
                 if(flag=='auto'?true:confirm("刷新刮刮卡？")){
+                    this.alert('刷新中，請稍後','warn');
                     this.changeEnabled=false;
                     this.FirstTimeFlag=0;
                     var refresh = document.getElementById("refresh");
                     refresh.classList.add("fa-spin");
-                    this.getPrize();
+                    this.getPrize('change');
                     this.getStatus();
                     this.getStage();
                 }
             },
             autoScratch(){ // 完成實作
                 if(vm.remain<=0)
-                    alert("剩餘次數不足！")
+                    this.alert("剩餘次數不足！",'error');
                 else if(confirm("確認刮開？") && this.mainControl){
                     this.autoEnabled=false;
                     this.scratch();
@@ -211,6 +219,7 @@ window.onload=function(){
             exchange(id,content,price){ // 完成實作
                 var sd = document.getElementsByClassName('send')[id-1];
                 if(confirm('確認兌換？') && this.mainControl){
+                    this.alert('兌換中，請稍後','warn');
                     sd.innerText='傳送中～'
                     const url='https://script.google.com/macros/s/AKfycbwE-a9k3Iwal4V5sVqyv4FIbW678kUeA5HsV4_A2NXg-ZckjDnylk44FjX7apCiNGP7/exec';
                     var formData=new FormData();
@@ -226,12 +235,12 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=='failed') {
-                            alert('兌換失敗');
+                            this.alert('兌換失敗','error');
                             sd.innerText='兌換失敗'
                         }
                         else{
                             sd.innerText='兌換成功'
-                            alert("兌換成功")
+                            this.alert("兌換成功",'check')
                             this.point=resp;
                             this.getStatus();
                         }
@@ -251,7 +260,7 @@ window.onload=function(){
                 })
             },
             goalSend(index){
-                alert('提交請求中，請稍候！');
+                this.alert('ˊ成就校驗中，請稍候！','warn');
                 const url = 'https://script.google.com/macros/s/AKfycbzt2haMyqasS8Fe2bRE2m44g7ZliIygojZhX7pt7R71sTqEJjssAsuUjiJ5K-0pZLbObw/exec'
                 var formData=new FormData();
                 formData.append("id",index);
@@ -265,10 +274,10 @@ window.onload=function(){
                 .then(resp=>resp.text())
                 .then(resp=>{
                     if(resp=='failed') {
-                        alert('兌換失敗');
+                        this.alert('兌換失敗','error');
                     }
                     else{
-                        alert("恭喜獲得："+resp);
+                        this.alert("恭喜獲得："+resp,'check');
                         this.getStatus();
                         this.getStage();
                     }
@@ -291,12 +300,21 @@ window.onload=function(){
             closeFrame(openID){ // 完成實作
                 this.openID=openID;
             },
-            alert(msg){
-                alert(msg);
+            alert(msg,option){
+                clearTimeout(this.alertTimer)
+                this.alertMsgBlock=true;
+                this.alertMsg=msg;
+                if(option=='check') this.alertOption='check';
+                else if(option=='warn') this.alertOption='warn';
+                else if(option=='error') this.alertOption='error';
+                this.alertTimer = setTimeout(() => {
+                    this.alertMsgBlock=false;
+                }, 2500);
             },
             addList(){ // 完成實作
                 var content = prompt('新增每日任務:');
                 if(content!='' && content!=undefined && content.trim()!=''){
+                    this.alert('新增中，請稍後','warn');
                     const url='https://script.google.com/macros/s/AKfycbwCm1TtFOcOF3Qi8MuPEd5160ea38IV-gXgqiCeecde6vljHJeX_ceTxjSaTOxkoasQlA/exec';
                     var formData=new FormData();
                     formData.append("content",content);
@@ -310,10 +328,10 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=='failed') {
-                            alert('新增失敗');
+                            this.alert('新增失敗','error');
                         }
                         else{
-                            alert("新增成功");
+                            this.alert("新增成功",'check');
                             this.mission.push({
                                 id:'5',
                                 name:'任務五',
@@ -339,8 +357,8 @@ window.onload=function(){
                 })
             },
             useStage(id){
-                if(this.stageRemain['stage'+id]>0?confirm('確認使用道具？'):alert('道具不足')){
-                    alert('道具校驗中，請稍候！');
+                if(this.stageRemain['stage'+id]>0?confirm('確認使用道具？'):this.alert('道具不足','error')){
+                    this.alert('道具校驗中，請稍候！','warn');
                     const url='https://script.google.com/macros/s/AKfycbwDnDoZRI9cq4Ewg0AFBhtcYlnJdSjQ_Sq_ZQqGqqVqioFTIT-hXrSxp34Fu5hrq-qP/exec'
                     var formData=new FormData();
                     formData.append('key',this.key);
@@ -357,14 +375,13 @@ window.onload=function(){
                             this.getStage();
                             this.use(id);
                         }
-                        else console.log('道具不足，使用失敗');
+                        else this.alert('道具不足，使用失敗','error');
                     })
                 }
-                
             },
             use(id){
                 if(id==1){ // 機率上升
-                    alert('本次刮刮卡機率大幅上升（請勿刷新刮刮卡）');
+                    this.alert('機率提升（請勿刷新刮刮卡）','check');
                     const url='https://script.google.com/macros/s/AKfycbwL7u3ivlEgsBPEyUc4lTh9FbE9ute7H6kqQU17jAL1tCtURM2t1VHR1jEkz7ithaPO/exec'
                     var config={
                         method:"get",
@@ -377,7 +394,7 @@ window.onload=function(){
                     })
                 }
                 else if(id==2){ // 透視卡牌
-                    alert('成功使用透視卡牌，請等待3秒後再刷新');
+                    this.alert('透視卡牌（延遲刷新）','check');
                     var canvas = document.getElementById("canvas");
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -391,7 +408,7 @@ window.onload=function(){
                 }
                 else if(id==3){ // 雙倍獎勵
                     this.isDouble=true;
-                    alert('獲得雙倍獎勵機會（可刷新刮刮卡）');
+                    this.alert('雙倍獎勵（可刷新卡牌）','check');
                 }
                 else if(id==4){ // 再抽一次
                     const url='https://script.google.com/macros/s/AKfycbwmsRULSHcethoqlnfgbc5zz_gXY7fJ3Rs8AbepwTCfCTiysuHUf3opL6XsYYIA53NX/exec';
@@ -406,21 +423,53 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=='success'){
-                            alert('使用成功，獲得一次額外抽獎機會!');
+                            this.alert('獲得機會一次','check');
                             this.getStatus();
                             this.changePrize('auto');
                         }
-                        else alert('使用失敗，請重新嘗試！');
+                        else this.alert('使用失敗','error');
                     })
                 }
                 else if(id==5){ // 抽取建議
-                    if(this.prize.id<5) alert('六等獎（不含）以下獎勵，建議重新抽取');
-                    else alert('六等獎（含）以上獎勵，建議抽取'); 
+                    if(this.prize.id<5) this.alert('(五等獎以下）不建議抽取此張','warn');
+                    else this.alert('(六等獎以上）建議抽取此張','warn'); 
                 }
+            },
+            toggleBell(msg){
+                this.alert(msg+'中，請稍後','warn');
+                var url='https://script.google.com/macros/s/AKfycbyQohwBtf8iCqObdCf4sZEoYDmy5t4v2jUwXNWhmNzeKlbOC6KKZMmuES6UYJzFF3W4/exec'
+                var formData=new FormData();
+                formData.append('key',this.key);
+                var config={
+                    method:"post",
+                    body:formData,
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.text())
+                .then(resp=>{
+                    if(resp=='success'){
+                        this.bellStatus=(this.bellStatus==false?true:false);
+                        this.alert(msg+'通知成功','check')
+                    }
+                    else this.alert(msg+'通知失敗','error');
+                })        
+            },
+            getBell(){
+                var url='https://script.google.com/macros/s/AKfycbyQohwBtf8iCqObdCf4sZEoYDmy5t4v2jUwXNWhmNzeKlbOC6KKZMmuES6UYJzFF3W4/exec';
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.bellStatus=resp.status;
+                })
             }
         }
     })
-    function draw(prize){ // 完成實作
+    function draw(prize,option){ // 完成實作
         var canvas = document.getElementById("canvas");
         var bbx = canvas.getBoundingClientRect(); // 避免失真
         if (canvas.getContext) {
@@ -442,7 +491,7 @@ window.onload=function(){
         else{
             canvas.onmousedown=function(){
                 if(vm.remain<=0)
-                    alert("剩餘次數不足！")
+                    this.alert("剩餘次數不足！",'error');
                 else{
                     if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
                     vm.FirstTimeFlag=1;
@@ -480,6 +529,7 @@ window.onload=function(){
         // }
         vm.changeEnabled=true; // 開啟刷新功能
         vm.autoEnabled=true; // 開啟自動刮開功能
+        if(option=='change') vm.alert('刷新成功','check');
     }
     vm.getPermission();
     vm.getStatus();
@@ -489,5 +539,6 @@ window.onload=function(){
     vm.getBuyHistory();
     vm.getStage();
     vm.getGoal();
+    vm.getBell();
 }
 
