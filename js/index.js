@@ -90,7 +90,7 @@ window.onload=function(){
                     this.prob=(resp.prob*100).toFixed(5);
                     this.added=resp.added;
                     this.fadded=resp.fadded;
-                    this.showAddListBtn=resp.mission.length<5;
+                    this.showAddListBtn=resp.mission.length<7;
                 })
             },
             submit(id){ // 完成實作
@@ -339,8 +339,8 @@ window.onload=function(){
                         else{
                             this.alert("新增成功",'check');
                             this.mission.push({
-                                id:'5',
-                                name:'任務五',
+                                id:'7',
+                                name:'任務七',
                                 content:content,
                                 checked:false
                             })
