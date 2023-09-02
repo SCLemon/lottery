@@ -170,14 +170,14 @@ window.onload=function(){
                     var cx=-20;
                     var cy=0;
                     const timer = setInterval(function(){
-                        var w = 25;	
-                        var h = 25;
-                        cx+=25;
+                        var w = 30;	
+                        var h = 30;
+                        cx+=20;
                         var x = (cx)*(canvas.width/bbx.width); 
                         var y = (cy)*(canvas.height/bbx.height);
                         if(x>300) {
                             cx=-20;
-                            cy+=50;
+                            cy+=40;
                         }
                         if(y>155) clearInterval(timer)
                         ctx.clearRect(x,y,w,h);
@@ -480,6 +480,9 @@ window.onload=function(){
             },
             closeTK(){
                 this.ticketBlock=false;
+            },
+            col(id,mean){
+                this.alert('未來功能預告：'+mean,'warn');
             }
         }
     })
@@ -505,13 +508,13 @@ window.onload=function(){
         else{
             canvas.onmousedown=function(){
                 if(vm.remain<=0)
-                    this.alert("剩餘次數不足！",'error');
+                    vm.alert("剩餘次數不足！",'error');
                 else{
                     if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
                     vm.FirstTimeFlag=1;
                     canvas.onmousemove=function(e){
-                        var w = 15;			// 清除區域的寬度
-                        var h = 15;			// 清除區域的高度
+                        var w = 20;			// 清除區域的寬度
+                        var h = 20;			// 清除區域的高度
                         var x = (e.clientX-bbx.left)*(canvas.width/bbx.width);    // 清除區域的x位置
                         var y = (e.clientY-bbx.top)*(canvas.height/bbx.height);		// 清除區域的y位置
                         ctx.clearRect(x,y,w,h);

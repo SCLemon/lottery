@@ -420,9 +420,45 @@ body{
     color: white;
     text-shadow: 1px 1px 1px gray;
 }
+.left-col{
+    position: absolute;
+    height: 260px;
+    width: 45px;
+    left: 6px;
+    top:100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.right-col{
+    position: absolute;
+    height: 260px;
+    width: 45px;
+    right: 6px;
+    top:100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.lc-item{
+    width: 38.7px;
+    height: 38.7px;
+    margin-bottom: 7.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lc-item>img{
+    width: 100%;
+}
+.lc-item:hover{
+    cursor: pointer;
+}
 .canvas{
-    width: 340px;
-    height: 340px;
+    width: 260px;
+    height: 260px;
     border: 1px solid rgb(205, 205, 205);
     margin: 0 auto;
     background-repeat: no-repeat;

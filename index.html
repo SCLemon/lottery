@@ -134,6 +134,18 @@
             <p>期許每一天的你都完成了目標</p>
             <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changeEnabled?changePrize():''"></i>
         </div>
+        <div class="left-col">
+            <div class="lc-item" @click="col(0,'日曆紀錄')"><img src="img/calandar.png" alt="" title="日曆紀錄"></div>
+            <div class="lc-item" @click="col(1,'隨機贈禮')"><img src="img/gift.png" alt="" title="隨機贈禮"></div>
+            <div class="lc-item" @click="col(2,'夥伴協助')"><img src="img/partner.png" alt="" title="夥伴協助"></div>
+            <div class="lc-item" @click="col(3,'寵物贈禮')"><img src="img/chick1.png" alt="" title="寵物贈禮"></div>
+            <div class="lc-item" @click="col(4,'心聲對話桶')"><img src="img/mailbox.png" alt="" title="心聲對話桶"></div>
+        </div>
+        <div class="right-col">
+            <div class="lc-item" @click="col(5,'系統公告')"><img src="img/speaker.png" alt="" title="系統公告"></div>
+            <div class="lc-item" @click="col(5,'背包功能')"><img src="img/backpack.png" alt="" title="背包功能"></div>
+            <div class="lc-item" @click="col(7,'問題回報')"><img src="img/report.png" alt="" title="問題回報"></div>
+        </div>
         <canvas class="canvas" id="canvas"></canvas>
         <div class="list">
             <div class="list-h">
