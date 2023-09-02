@@ -27,7 +27,10 @@ window.onload=function(){
             alertMsgBlock:false,
             alertOption:'',
             alertMsg:'',
-            alertTimer:0
+            alertTimer:0,
+            ticketItem:'img/stage6.png',
+            ticketNum:1,
+            ticketBlock:false,
         },
         methods:{
             getPermission(){ // 完成實作
@@ -93,6 +96,7 @@ window.onload=function(){
             submit(id){ // 完成實作
                 var btn = document.getElementsByClassName("btn")[id-1];
                 if(confirm("確認發送？") && this.mainControl){
+                    this.alert('發送請求中，請稍候','warn');
                     btn.innerText="發送中";
                     const url = 'https://script.google.com/macros/s/AKfycbwyHnA3Pk9W9iw_4Nt9fDTnmuRtKhqPqCBAOA-VsRT4fE3nvpMMO18-fICvLPEhC7-pOg/exec';
                     var formData=new FormData();
@@ -111,6 +115,7 @@ window.onload=function(){
                             btn.innerText="已完成";
                             this.getStatus();
                             this.getGoal();
+                            this.ticket(6,1);
                         }
                         else{
                             this.alert("發送失敗",'error')
@@ -271,15 +276,16 @@ window.onload=function(){
                     redirect:"follow"
                 }
                 fetch(url,config)
-                .then(resp=>resp.text())
+                .then(resp=>resp.json())
                 .then(resp=>{
-                    if(resp=='failed') {
+                    if(resp.status=='failed') {
                         this.alert('兌換失敗','error');
                     }
                     else{
-                        this.alert("恭喜獲得："+resp,'check');
+                        this.alert("恭喜獲得："+resp.name,'check');
                         this.getStatus();
                         this.getStage();
+                        this.ticket(resp.id,1);
                     }
                     this.getGoal();
                 })
@@ -466,6 +472,14 @@ window.onload=function(){
                 .then(resp=>{
                     this.bellStatus=resp.status;
                 })
+            },
+            ticket(id,num){
+                this.ticketBlock=true;
+                this.ticketItem='img/stage'+id+'.png';
+                this.ticketNum=num;
+            },
+            closeTK(){
+                this.ticketBlock=false;
             }
         }
     })

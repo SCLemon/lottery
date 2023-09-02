@@ -38,6 +38,67 @@ body{
     margin: 0 auto;
     z-index: 1004;
 }
+@keyframes shadow {
+    0%{
+        box-shadow: 1px 1px 5px white;
+    }
+    50%{
+        box-shadow: 1px 1px 20px white;
+    }
+    100%{
+        box-shadow: 1px 1px 5px white;
+    }
+}
+.ticket{
+    width: 375px;
+    height: 125px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    background-color: rgba(255,255,255,0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 1006;
+    animation: shadow 2s infinite;
+}
+.ticket:hover{
+    cursor: pointer;
+}
+.tk-icon{
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+.tk-icon>img{
+    width: 100%;
+}
+.tk-num{
+    position: absolute;
+    right: -1px;
+    bottom: 0px;
+    font-size: 14px;
+}
+@keyframes fade {
+    0%{
+        color: rgba(0,0,0,0.8);
+    }
+    50%{
+        color: rgba(0,0,0,0.2);
+    }
+    100%{
+        color: rgba(0,0,0,0.8);
+    }
+}
+.tk-text{
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    color: rgba(0,0,0,0.8);
+    animation: fade 2s infinite;
+}
 .check{
     color: greenyellow;
     font-size: 14.5px;

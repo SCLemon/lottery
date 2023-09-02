@@ -34,6 +34,14 @@
 </style>
 <body>
     <div id="app" class="main" v-cloak>
+        <div class="ticket" v-if="ticketBlock" @click="closeTK">
+            <h1>恭喜獲得</h1>
+            <div class="tk-icon">
+                <img :src="ticketItem" alt="">
+                <div class="tk-num">{{ticketNum}}</div>
+            </div>
+            <div class="tk-text">點擊任意一處以關閉</div>
+        </div>
         <div class="alertMsgBlock" v-if="alertMsgBlock">
             <p v-if="alertOption=='check'"><i class="fa-solid fa-circle-check check"></i> {{alertMsg}}</p>
             <p v-if="alertOption=='warn'"><i class="fa-solid fa-circle-exclamation warn"></i> {{alertMsg}}</p>
