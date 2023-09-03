@@ -530,7 +530,7 @@ window.onload=function(){
             },
             renamePet(){
                 var name=prompt('請輸入名稱：');
-                if(name!='' || name.trim()!=''){
+                if(name!='' || name.trim()!='' || name!=undefined){
                     this.alert('更名中，請稍候','warn');
                     const url='https://script.google.com/macros/s/AKfycbwSC17FHVKge1CY7HscLCOZFWC7x4jPaDRkhdEao0W6EOy8igEm2mgYEsfqz_QWmT1v/exec'
                     var formData=new FormData();
