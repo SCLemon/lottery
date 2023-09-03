@@ -34,11 +34,6 @@ window.onload=function(){
             ticketBlock:false,
             pet:{}
         },
-        computed:{
-            pet_pp(){
-                return 'width:'+this.pet.progress*10+'%';
-            }
-        },
         methods:{
             getPermission(){ // 完成實作
                 var url='https://script.google.com/macros/s/AKfycbxZm-OQYqwepnYdHDNRTweh_xWw2TE_DFhX1waipHmANvwsdwH9lR_je-btc6GARyt0oQ/exec';

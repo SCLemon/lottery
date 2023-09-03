@@ -132,7 +132,7 @@
                         <div class="pet-pp">
                             <div class="pp-lv">Lv {{pet.level}}</div>
                             <div class="pp-c">
-                                <div class="pp-cc" :style="pet_pp"></div>
+                                <div class="pp-cc" :style="'width:'+pet.progress+'%;'"></div>
                             </div>
                         </div>
                         <div class="pet-pbtn" @click="pet.feedStatus=='已完成'?alert('今日已餵食','warn'):feedPet()" v-text="pet.feedStatus=='已完成'?'已餵食':'餵食'"></div>
