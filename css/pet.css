@@ -6,7 +6,7 @@
     width: 303.75px;
     height: 273.75px;
     margin: 0 auto;
-    margin-top: 45px;
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -119,4 +119,12 @@
     position: absolute;
     left:25px;
     top:18px;
+}
+.pet>h1{
+    font-size: 32px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 2;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
 }
