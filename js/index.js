@@ -17,6 +17,7 @@ window.onload=function(){
             prob:0,
             fadded:0,
             added:0,
+            padded:0,
             mainControl:false,
             key:'',
             showAddListBtn:false,
@@ -31,6 +32,12 @@ window.onload=function(){
             ticketItem:'img/stage6.png',
             ticketNum:1,
             ticketBlock:false,
+            pet:{}
+        },
+        computed:{
+            pet_pp(){
+                return 'width:'+this.pet.progress*10+'%';
+            }
         },
         methods:{
             getPermission(){ // 完成實作
@@ -90,6 +97,7 @@ window.onload=function(){
                     this.prob=(resp.prob*100).toFixed(5);
                     this.added=resp.added;
                     this.fadded=resp.fadded;
+                    this.padded=resp.padded;
                     this.showAddListBtn=resp.mission.length<7;
                 })
             },
@@ -481,8 +489,70 @@ window.onload=function(){
             closeTK(){
                 this.ticketBlock=false;
             },
-            col(id,mean){
-                this.alert('未來功能預告：'+mean,'warn');
+            col(id,mean,status){
+                if(status){
+                    this.openID=id;
+                }
+                else this.alert('未來功能預告：'+mean,'warn');
+            },
+            getPet(){
+                const url='https://script.google.com/macros/s/AKfycbwSC17FHVKge1CY7HscLCOZFWC7x4jPaDRkhdEao0W6EOy8igEm2mgYEsfqz_QWmT1v/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.pet=resp;
+                })
+            },
+            feedPet(){
+                this.alert('餵食中，請稍候','warn');
+                const url='https://script.google.com/macros/s/AKfycbwSC17FHVKge1CY7HscLCOZFWC7x4jPaDRkhdEao0W6EOy8igEm2mgYEsfqz_QWmT1v/exec'
+                var formData=new FormData();
+                formData.append('key',this.key);
+                formData.append('method','feed');
+                var config={
+                    method:"post",
+                    body:formData,
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.text())
+                .then(resp=>{
+                    if(resp=='success'){
+                        this.alert('餵食完成','check');
+                        this.getPet();
+                    }
+                    else this.alert('餵食失敗','error');
+                })
+            },
+            renamePet(){
+                var name=prompt('請輸入名稱：');
+                if(name!='' || name.trim()!=''){
+                    this.alert('更名中，請稍候','warn');
+                    const url='https://script.google.com/macros/s/AKfycbwSC17FHVKge1CY7HscLCOZFWC7x4jPaDRkhdEao0W6EOy8igEm2mgYEsfqz_QWmT1v/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('method','rename');
+                    formData.append('name',name);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.alert('更名成功','check');
+                            this.getPet();
+                        }
+                        else this.alert('更名失敗','error');
+                    })
+                }
+                else this.alert('更名取消','warn');
             }
         }
     })
@@ -557,5 +627,6 @@ window.onload=function(){
     vm.getStage();
     vm.getGoal();
     vm.getBell();
+    vm.getPet();
 }
 

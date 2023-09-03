@@ -6,6 +6,7 @@
     <link rel="icon" href="img/gambler-luck-svgrepo-com.svg">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/pet.css">
     <script src="js/vue.js"></script>
     <script src="js/index.js"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
@@ -115,6 +116,38 @@
                     </div>
                 </div>
             </div>
+            <div class="calendar" v-if="openID==5">
+            </div>
+            <div class="pet" v-if="openID==6">
+                <div class="pet-main">
+                    <div class="pet-name">
+                        {{pet.name}} <i class="fa-solid fa-pencil pencil" @click="renamePet()"></i>
+                    </div>
+                    <div class="pet-img">
+                        <img :src="pet.img" alt="">
+                    </div>
+                    <div class="pet-c"></div>
+                    <div class="pet-progress">
+                        <div class="pet-pp">
+                            <div class="pp-lv">Lv {{pet.level}}</div>
+                            <div class="pp-c">
+                                <div class="pp-cc" :style="pet_pp"></div>
+                            </div>
+                        </div>
+                        <div class="pet-pbtn" @click="pet.feedStatus=='已完成'?alert('今日已餵食','warn'):feedPet()" v-text="pet.feedStatus=='已完成'?'已餵食':'餵食'"></div>
+                    </div>
+                </div>
+                <div class="pet-skill">
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=1)"></i>LV1 寵物贈禮 10點/天</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=2)"></i>LV5 寵物加成 5 次</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=3)"></i>LV10 寵物贈禮 15點/天</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=4)"></i>LV15 寵物加成 10 次</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=5)"></i>LV20 寵物贈禮 20點/天</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=6)"></i>LV25 寵物加成 15 次</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=7)"></i>LV30 寵物贈禮 25點/天</div>
+                    <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=8)"></i>LV35 寵物加成 20 次</div>
+                </div>
+            </div>
         </div>
         <i class="fa-solid fa-bars bars" id="bars" @click="openList()"></i>
         <div class="bar-list" id="bl">
@@ -126,6 +159,7 @@
             <div class="bl-p">
                 <p>頭獎機率：{{prob}}%</p>
                 <p>永久加成：{{fadded}}/50</p>
+                <p>寵物加成：{{padded}}/20</p>
                 <p>系統加成：{{added}}/100</p>
             </div>
         </div>
@@ -135,16 +169,16 @@
             <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changeEnabled?changePrize():''"></i>
         </div>
         <div class="left-col">
-            <div class="lc-item" @click="col(0,'日曆紀錄')"><img src="img/calandar.png" alt="" title="日曆紀錄"></div>
-            <div class="lc-item" @click="col(1,'隨機贈禮')"><img src="img/gift.png" alt="" title="隨機贈禮"></div>
-            <div class="lc-item" @click="col(2,'夥伴協助')"><img src="img/partner.png" alt="" title="夥伴協助"></div>
-            <div class="lc-item" @click="col(3,'寵物贈禮')"><img src="img/chick1.png" alt="" title="寵物贈禮"></div>
-            <div class="lc-item" @click="col(4,'心聲對話桶')"><img src="img/mailbox.png" alt="" title="心聲對話桶"></div>
+            <div class="lc-item" @click="col(5,'日曆紀錄',false)"><img src="img/calandar.png" alt="" title="日曆紀錄"></div>
+            <div class="lc-item" @click="col(0,'隨機贈禮',false)"><img src="img/gift.png" alt="" title="隨機贈禮"></div>
+            <div class="lc-item" @click="col(0,'夥伴協助',false)"><img src="img/partner.png" alt="" title="夥伴協助"></div>
+            <div class="lc-item" @click="col(6,'寵物贈禮',true)"><img :src="pet.img==undefined?'img/chick1.png':pet.img" alt="" title="寵物贈禮"></div>
+            <div class="lc-item" @click="col(0,'心聲對話桶',false)"><img src="img/mailbox.png" alt="" title="心聲對話桶"></div>
         </div>
         <div class="right-col">
-            <div class="lc-item" @click="col(5,'系統公告')"><img src="img/speaker.png" alt="" title="系統公告"></div>
-            <div class="lc-item" @click="col(5,'背包功能')"><img src="img/backpack.png" alt="" title="背包功能"></div>
-            <div class="lc-item" @click="col(7,'問題回報')"><img src="img/report.png" alt="" title="問題回報"></div>
+            <div class="lc-item" @click="col(0,'系統公告',false)"><img src="img/speaker.png" alt="" title="系統公告"></div>
+            <div class="lc-item" @click="col(0,'背包功能',false)"><img src="img/backpack.png" alt="" title="背包功能"></div>
+            <div class="lc-item" @click="col(0,'問題回報',false)"><img src="img/report.png" alt="" title="問題回報"></div>
         </div>
         <canvas class="canvas" id="canvas"></canvas>
         <div class="list">
