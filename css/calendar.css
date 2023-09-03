@@ -1,0 +1,10 @@
+.calendar{
+    width: 100%;
+    margin-top: 50px;
+}
+.calendar-box{
+    width: 80%;
+    margin: 0 auto;
+    height: 100px;
+    border: 1px solid red;
+}

@@ -313,9 +313,7 @@ window.onload=function(){
                 clearTimeout(this.alertTimer)
                 this.alertMsgBlock=true;
                 this.alertMsg=msg;
-                if(option=='check') this.alertOption='check';
-                else if(option=='warn') this.alertOption='warn';
-                else if(option=='error') this.alertOption='error';
+                this.alertOption=option;
                 this.alertTimer = setTimeout(() => {
                     this.alertMsgBlock=false;
                 }, 2500);
@@ -525,7 +523,7 @@ window.onload=function(){
             },
             renamePet(){
                 var name=prompt('請輸入名稱：');
-                if(name!='' || name.trim()!='' || name!=undefined){
+                if(name!='' && name!=undefined && name!=null){
                     this.alert('更名中，請稍候','warn');
                     const url='https://script.google.com/macros/s/AKfycbwSC17FHVKge1CY7HscLCOZFWC7x4jPaDRkhdEao0W6EOy8igEm2mgYEsfqz_QWmT1v/exec'
                     var formData=new FormData();
@@ -624,4 +622,3 @@ window.onload=function(){
     vm.getBell();
     vm.getPet();
 }
-
