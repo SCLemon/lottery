@@ -37,8 +37,8 @@ window.onload=function(){
             rouDeg:'rotate(0deg)',
             rouSec:'10s',
             rouEnabled:false,
-            changeGameEnabled:true,
-            mouseEnabled:true,
+            changeGameEnabled:false,
+            mouseEnabled:false,
         },
         methods:{
             getPermission(){ // 完成實作
