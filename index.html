@@ -192,7 +192,7 @@
         <div :class="showGameID==2?'roulette':'roulette gameHide'">
             <img src="img/o.png" alt="" :style="{transform:rouDeg,transition:rouSec}">
             <div class="tri"></div>
-            <div class="rou-center" @click="rouEnabled?roulette():alert('請先刷新再遊玩','warn')">
+            <div class="rou-center" @click="rouEnabled?roulette():changePrize()">
                 <i class="fa-solid fa-fingerprint fa-beat"></i>
             </div>
         </div>
