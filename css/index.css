@@ -571,3 +571,9 @@ body{
 .refresh:hover{
     cursor: pointer;
 }
+.right{
+    transform: rotate(180deg);
+}
+.gameHide{
+    display: none !important;
+}

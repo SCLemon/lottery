@@ -32,7 +32,12 @@ window.onload=function(){
             ticketItem:'img/stage6.png',
             ticketNum:1,
             ticketBlock:false,
-            pet:{}
+            pet:{},
+            showGameID:1,
+            rouDeg:'rotate(0deg)',
+            rouSec:'10s',
+            rouEnabled:false,
+            changeGameEnabled:true,
         },
         methods:{
             getPermission(){ // 完成實作
@@ -146,6 +151,7 @@ window.onload=function(){
                 .then(resp=>{
                     this.isDouble=false;
                     this.getHistory();
+                    this.getStatus();
                     this.alert('獎品紀錄成功','check');
                 })
             },
@@ -159,6 +165,8 @@ window.onload=function(){
                     this.getPrize('change');
                     this.getStatus();
                     this.getStage();
+                    this.rouSec='0s';
+                    this.rouDeg='rotate(0deg)'; // 重置輪盤
                 }
             },
             autoScratch(){ // 完成實作
@@ -546,6 +554,38 @@ window.onload=function(){
                     })
                 }
                 else this.alert('更名取消','warn');
+            },
+            changeGame(flag){
+                if(flag=='up' && this.changeGameEnabled){
+                    if(this.showGameID<=1) this.alert('已達最前遊戲','warn');
+                    else {
+                        this.changeGameEnabled=false;
+                        this.showGameID--;
+                        this.changePrize('auto');
+                    }
+                }
+                else if(flag=='down' && this.changeGameEnabled){
+                    if(this.showGameID>=2) this.alert('已達最後遊戲','warn');
+                    else {
+                        this.changeGameEnabled=false;
+                        this.showGameID++;
+                        this.changePrize('auto');
+                    }
+                }
+                else{
+                    this.alert('請等待刷新完畢','warn');
+                }
+            },
+            roulette(){
+                if(vm.remain<=0)
+                    this.alert("剩餘次數不足！",'error');
+                else if(confirm("確認遊玩？") && this.mainControl){
+                    this.rouEnabled=false;
+                    var deg =-(this.prize.id*30+7185);
+                    this.rouSec='10s';
+                    this.rouDeg='rotate('+deg+'deg)';
+                    this.scratch();
+                }
             }
         }
     })
@@ -609,6 +649,8 @@ window.onload=function(){
         // }
         vm.changeEnabled=true; // 開啟刷新功能
         vm.autoEnabled=true; // 開啟自動刮開功能
+        vm.rouEnabled=true;
+        vm.changeGameEnabled=true;
         if(option=='change') vm.alert('刷新成功','check');
     }
     vm.getPermission();

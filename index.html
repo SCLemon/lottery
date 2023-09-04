@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/pet.css">
     <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/roulette.css">
     <script src="js/vue.js"></script>
     <script src="js/index.js"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
@@ -169,7 +170,7 @@
             </div>
         </div>
         <div class="header">
-            <h1>每日刮刮樂</h1>
+            <h1>每日小驚喜</h1>
             <p>期許每一天的你都完成了目標</p>
             <i class="fa-solid fa-arrows-rotate refresh" id="refresh" @click="changeEnabled?changePrize():''"></i>
         </div>
@@ -184,12 +185,21 @@
             <div class="lc-item" @click="col(0,'系統公告',false)"><img src="img/speaker.png" alt="" title="系統公告"></div>
             <div class="lc-item" @click="col(0,'背包功能',false)"><img src="img/backpack.png" alt="" title="背包功能"></div>
             <div class="lc-item" @click="col(0,'問題回報',false)"><img src="img/report.png" alt="" title="問題回報"></div>
+            <div class="lc-item" @click="changeGame('down')"><img class="right" src="img/arrow.png" alt="" title="下一個遊戲"></div>
+            <div class="lc-item" @click="changeGame('up')"><img class="left" src="img/arrow.png" alt="" title="上一個遊戲"></div>
         </div>
-        <canvas class="canvas" id="canvas"></canvas>
+        <canvas :class="showGameID==1?'canvas':'canvas gameHide'" id="canvas"></canvas>
+        <div :class="showGameID==2?'roulette':'roulette gameHide'">
+            <img src="img/o.png" alt="" :style="{transform:rouDeg,transition:rouSec}">
+            <div class="tri"></div>
+            <div class="rou-center" @click="rouEnabled?roulette():alert('請先刷新再遊玩','warn')">
+                <i class="fa-solid fa-fingerprint fa-beat"></i>
+            </div>
+        </div>
         <div class="list">
             <div class="list-h">
-                <div class="autoBtn" @click="autoEnabled?autoScratch():''">自動刮開</div>
-                <div class="stageList">
+                <div class="autoBtn" v-if='showGameID==1' @click="autoEnabled?autoScratch():''">自動刮開</div>
+                <div class="stageList" v-if="showGameID==1">
                     <div class="stage" @click="useStage(1)">
                         <div class="stageRemain">{{stageRemain.stage1}}</div>
                         <img src="img/stage1.png" alt="機率提升" title="機率提升">
