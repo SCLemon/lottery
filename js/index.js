@@ -38,6 +38,7 @@ window.onload=function(){
             rouSec:'10s',
             rouEnabled:false,
             changeGameEnabled:true,
+            mouseEnabled:true,
         },
         methods:{
             getPermission(){ // 完成實作
@@ -156,9 +157,14 @@ window.onload=function(){
                 })
             },
             changePrize(flag){ // 完成實作
-                if(flag=='auto'?true:confirm("刷新刮刮卡？")){
+                if(flag=='auto'?true:confirm("刷新遊戲？")){
                     this.alert('刷新中，請稍後','warn');
+                    this.rouEnabled=false;
+                    this.autoEnabled=false;
                     this.changeEnabled=false;
+                    this.changeGameEnabled=false;
+                    this.mouseEnabled=false;
+
                     this.FirstTimeFlag=0;
                     var refresh = document.getElementById("refresh");
                     refresh.classList.add("fa-spin");
@@ -559,7 +565,11 @@ window.onload=function(){
                 if(flag=='up' && this.changeGameEnabled){
                     if(this.showGameID<=1) this.alert('已達最前遊戲','warn');
                     else {
+                        this.rouEnabled=false;
+                        this.autoEnabled=false;
+                        this.changeEnabled=false;
                         this.changeGameEnabled=false;
+                        this.mouseEnabled=false;
                         this.showGameID--;
                         this.changePrize('auto');
                     }
@@ -567,7 +577,11 @@ window.onload=function(){
                 else if(flag=='down' && this.changeGameEnabled){
                     if(this.showGameID>=2) this.alert('已達最後遊戲','warn');
                     else {
+                        this.rouEnabled=false;
+                        this.autoEnabled=false;
+                        this.changeEnabled=false;
                         this.changeGameEnabled=false;
+                        this.mouseEnabled=false;
                         this.showGameID++;
                         this.changePrize('auto');
                     }
@@ -612,6 +626,9 @@ window.onload=function(){
             canvas.onmousedown=function(){
                 if(vm.remain<=0)
                     vm.alert("剩餘次數不足！",'error');
+                else if(!vm.mouseEnabled){
+                    vm.alert("請等待刷新完成始可遊玩",'warn');
+                }
                 else{
                     if(vm.FirstTimeFlag==0 && vm.mainControl) vm.scratch(); // 執行紀錄
                     vm.FirstTimeFlag=1;
@@ -651,6 +668,7 @@ window.onload=function(){
         vm.autoEnabled=true; // 開啟自動刮開功能
         vm.rouEnabled=true;
         vm.changeGameEnabled=true;
+        vm.mouseEnabled=true;
         if(option=='change') vm.alert('刷新成功','check');
     }
     vm.getPermission();
