@@ -616,7 +616,7 @@ window.onload=function(){
                 .then(resp=>{
                     this.gameTask=resp;
                     this.ghostBlood=(resp.ghost.remainBlood/resp.ghost.blood)*100+'%';
-                    this.ghostImg='url(../'+resp.ghost.img+')';
+                    this.ghostImg='url('+resp.ghost.img+')';
                 })
             },
             sendGameTask(id){

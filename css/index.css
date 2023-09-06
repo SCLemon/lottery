@@ -18,7 +18,7 @@ body{
     left:25px;
     font-size: 26px;
     color: white;
-    z-index: 1003;
+    z-index: 1002;
 }
 .bell:hover{
     cursor: pointer;
