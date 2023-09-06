@@ -114,7 +114,7 @@ window.onload=function(){
                     const url = 'https://script.google.com/macros/s/AKfycbwyHnA3Pk9W9iw_4Nt9fDTnmuRtKhqPqCBAOA-VsRT4fE3nvpMMO18-fICvLPEhC7-pOg/exec';
                     var formData=new FormData();
                     formData.append("id",id);
-                    formData.append('key',this.key)
+                    formData.append('key',this.key);
                     var config={
                         method:"post",
                         body:formData,
@@ -124,7 +124,7 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=="success"){
-                            this.ticket(6,1);
+                            this.ticket(6,this.mission[id-1].reward);
                             this.alert("發送成功",'check')
                             btn.innerText="已完成";
                             this.getGameTask(); // 提前
