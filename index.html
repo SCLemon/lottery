@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/pet.css">
     <link rel="stylesheet" href="css/calendar.css">
     <link rel="stylesheet" href="css/roulette.css">
+    <link rel="stylesheet" href="css/partner.css">
     <script src="js/vue.js"></script>
     <script src="js/index.js"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
@@ -123,7 +124,51 @@
                 <div class="calendar-box"></div>
                 <div class="calendar-box"></div>
             </div>
-            <div class="pet" v-if="openID==6">
+            <div class="pt" v-if="openID==6">
+                <h1>夥伴模式</h1>
+                <div class="pt-head">
+                    <div class="chapter">Chapter {{gameTask.ghost.chapter}}</div>
+                    <div class="ghost-blood">
+                        <div class="blood-progress" :style="{width:ghostBlood}"></div>
+                        <div class="remainBlood">{{gameTask.ghost.remainBlood}}/{{gameTask.ghost.blood}}</div>
+                    </div>
+                    <div class="gamer1"></div>
+                    <div class="gamer2"></div>
+                    <div class="ghost" :style="{backgroundImage:ghostImg}"></div>
+                </div>
+                <div class="gamer-detail">
+                    <div class="gamer-block">
+                        <div class="gamer-icon1"></div>
+                        <div class="gamer-occ">LV {{gameTask.gamer.level1}}</div>
+                        <div class="gamer-name">{{gameTask.gamer.name1}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(1)"></i></div>
+                        <div class="gamer-skill"><img src="img/sword.png" alt=""></div>
+                        <div class="gamer-up" @click="levelUp(1)">升級</div>
+                    </div>
+                    <div class="gamer-block">
+                        <div class="gamer-icon2"></div>
+                        <div class="gamer-occ">LV {{gameTask.gamer.level2}}</div>
+                        <div class="gamer-name">{{gameTask.gamer.name2}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(2)"></i></div>
+                        <div class="gamer-skill"><img src="img/lightning.png" alt=""></div>
+                        <div class="gamer-up" @click="levelUp(2)">升級</div>
+                    </div>
+                </div>
+                <div class="gamerTask">
+                    <h1>共同任務</h1>
+                    <div class="task">
+                        <div class="task-id">序列</div>
+                        <div class="task-check">女武神</div>
+                        <div class="task-check">魔法師</div>
+                        <div class="task-status">作戰執行</div>
+                    </div>
+                    <div class="task" v-for="obj in gameTask.task">
+                        <div class="task-id">{{obj.taskNum}}</div>
+                        <div class="task-check">{{obj.status1}}</div>
+                        <div class="task-check2" @click="obj.status2!='已完成'?sendGameTask(obj.id):alert('已完成此項任務','warn')">{{obj.status2}}</div>
+                        <div class="task-status">{{obj.attacked}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pet" v-if="openID==7">
                 <h1>寵物系統</h1>
                 <div class="pet-main">
                     <div class="pet-name">
@@ -177,8 +222,8 @@
         <div class="left-col">
             <div class="lc-item" @click="col(5,'日曆紀錄',false)"><img src="img/calandar.png" alt="" title="日曆紀錄"></div>
             <div class="lc-item" @click="col(0,'隨機贈禮',false)"><img src="img/gift.png" alt="" title="隨機贈禮"></div>
-            <div class="lc-item" @click="col(0,'夥伴協助',false)"><img src="img/partner.png" alt="" title="夥伴協助"></div>
-            <div class="lc-item" @click="col(6,'寵物贈禮',true)"><img :src="pet.img==undefined?'img/chick1.png':pet.img" alt="" title="寵物贈禮"></div>
+            <div class="lc-item" @click="col(6,'夥伴協助',true)"><img src="img/partner.png" alt="" title="夥伴協助"></div>
+            <div class="lc-item" @click="col(7,'寵物贈禮',true)"><img :src="pet.img==undefined?'img/chick1.png':pet.img" alt="" title="寵物贈禮"></div>
             <div class="lc-item" @click="col(0,'心聲對話桶',false)"><img src="img/mailbox.png" alt="" title="心聲對話桶"></div>
         </div>
         <div class="right-col">
@@ -228,7 +273,7 @@
             <div class="list-c" v-for="obj in mission">
                 <div>{{obj.name}}</div>
                 <div>{{obj.content}}</div>
-                <div id="btn" class="btn" @click="obj.checked?'':submit(obj.id)">{{obj.checked?"已完成":"確認完成"}}</div>
+                <div id="btn" class="btn" @click="obj.checked?alert('已完成此項任務','warn'):submit(obj.id)">{{obj.checked?"已完成":"確認完成"}}</div>
             </div>
             <div class="addList" v-if='showAddListBtn' @click="addList()"><i class="fa-solid fa-plus"></i></div>
         </div>

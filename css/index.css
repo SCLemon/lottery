@@ -120,7 +120,7 @@ body{
     margin: auto;
     width: 337.5px;
     height: 90vh;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.95);
     overflow-y: scroll;
     z-index:1002;
 }

@@ -39,6 +39,9 @@ window.onload=function(){
             rouEnabled:false,
             changeGameEnabled:false,
             mouseEnabled:false,
+            gameTask:{},
+            ghostBlood:'0%',
+            ghostImg:''
         },
         methods:{
             getPermission(){ // 完成實作
@@ -100,6 +103,7 @@ window.onload=function(){
                     this.fadded=resp.fadded;
                     this.padded=resp.padded;
                     this.showAddListBtn=resp.mission.length<7;
+                    this.getGameTask();
                 })
             },
             submit(id){ // 完成實作
@@ -600,6 +604,93 @@ window.onload=function(){
                     this.rouDeg='rotate('+deg+'deg)';
                     this.scratch();
                 }
+            },
+            getGameTask(){
+                const url='https://script.google.com/macros/s/AKfycbyZY4hDVVap_hXUa3FfUKk3xZtby-Fl9_vCFUQ9XwWrCzYtHmw0S6XAWgqKU7Ntfy5H/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.gameTask=resp;
+                    this.ghostBlood=(resp.ghost.remainBlood/resp.ghost.blood)*100+'%';
+                    this.ghostImg='url(../'+resp.ghost.img+')';
+                })
+            },
+            sendGameTask(id){
+                if(confirm('確認送出？')){
+                    this.alert('傳送中，請稍後','warn');
+                    var url='https://script.google.com/macros/s/AKfycbyZY4hDVVap_hXUa3FfUKk3xZtby-Fl9_vCFUQ9XwWrCzYtHmw0S6XAWgqKU7Ntfy5H/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('taskID',id);
+                    formData.append('method','send');
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.alert('傳送成功','check');
+                            this.getGameTask();
+                        }
+                        else this.alert('傳送失敗','error');
+                    })  
+                }
+            },
+            renameGamer(index){
+                var name = prompt('請輸入名稱:');
+                if(name!=undefined && name!=''){
+                    this.alert('更名中，請稍後','warn');
+                    var url='https://script.google.com/macros/s/AKfycbyZY4hDVVap_hXUa3FfUKk3xZtby-Fl9_vCFUQ9XwWrCzYtHmw0S6XAWgqKU7Ntfy5H/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('name',name);
+                    formData.append('renameIndex',index);
+                    formData.append('method','rename');
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.alert('更名成功','check');
+                            this.getGameTask();
+                        }
+                        else this.alert('更名失敗','error');
+                    })  
+                }
+            },
+            levelUp(id){
+                if(confirm('確認升級？')){
+                    this.alert('傳送中，請稍後','warn');
+                    var url='https://script.google.com/macros/s/AKfycbxbefwo2pdmTyXVvnXODysKm6sdkXasRHXFL5Cr-QR3c-ACec7tR8iTAHJF5B3Io3vtZA/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('id',id);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.alert('傳送成功','check');
+                            this.getGameTask();
+                        }
+                        else this.alert('傳送失敗','error');
+                    })  
+                }
             }
         }
     })
@@ -681,4 +772,5 @@ window.onload=function(){
     vm.getGoal();
     vm.getBell();
     vm.getPet();
+    vm.getGameTask();
 }
