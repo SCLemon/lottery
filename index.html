@@ -140,14 +140,30 @@
                     <div class="gamer-block">
                         <div class="gamer-icon1"></div>
                         <div class="gamer-occ">LV {{gameTask.gamer.level1}}</div>
-                        <div class="gamer-name">{{gameTask.gamer.name1}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(1)"></i></div>
+                        <div class="gamer-name">
+                            <div class="gamerName-c">{{gameTask.gamer.name1}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(1)"></i></div>
+                            <div class="gamer-prop">
+                                <div class="prop"><div class="prop-img"><img src="img/heart.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill1.heart}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/shield.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill1.shield}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/attack.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill1.attack}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/magic.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill1.magic}}</div></div>
+                            </div>
+                        </div>
                         <div class="gamer-skill"><img src="img/sword.png" alt=""></div>
                         <div class="gamer-up" @click="levelUp(1)">升級</div>
                     </div>
                     <div class="gamer-block">
                         <div class="gamer-icon2"></div>
                         <div class="gamer-occ">LV {{gameTask.gamer.level2}}</div>
-                        <div class="gamer-name">{{gameTask.gamer.name2}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(2)"></i></div>
+                        <div class="gamer-name">
+                            <div class="gamerName-c">{{gameTask.gamer.name2}} <i class="fa-solid fa-pencil pencil" @click="renameGamer(2)"></i></div>
+                            <div class="gamer-prop">
+                                <div class="prop"><div class="prop-img"><img src="img/heart.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill2.heart}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/shield.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill2.shield}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/attack.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill2.attack}}</div></div>
+                                <div class="prop"><div class="prop-img"><img src="img/magic.png" alt=""></div><div class="prop-text">{{gameTask.gamer.skill2.magic}}</div></div>
+                            </div>
+                        </div>
                         <div class="gamer-skill"><img src="img/lightning.png" alt=""></div>
                         <div class="gamer-up" @click="levelUp(2)">升級</div>
                     </div>

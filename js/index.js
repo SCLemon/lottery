@@ -13,7 +13,7 @@ window.onload=function(){
             remainPlay:1,
             changeEnabled:false,
             autoEnabled:false,
-            openID:0,
+            openID:6,
             prob:0,
             fadded:0,
             added:0,
