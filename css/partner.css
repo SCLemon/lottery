@@ -158,12 +158,12 @@
 .task-id{
     width: 25%;
 }
-.task-check,.task-check2{
+.task-check{
     width: 25%;
     height: 30px;
     line-height: 30px;
 }
-.task-check2:hover{
+.task-check:hover{
     cursor: pointer;
     background: rgb(206, 206, 206);
     color: white;

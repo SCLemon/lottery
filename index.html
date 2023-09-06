@@ -162,8 +162,8 @@
                     </div>
                     <div class="task" v-for="obj in gameTask.task">
                         <div class="task-id">{{obj.taskNum}}</div>
-                        <div class="task-check">{{obj.status1}}</div>
-                        <div class="task-check2" @click="obj.status2!='已完成'?sendGameTask(obj.id):alert('已完成此項任務','warn')">{{obj.status2}}</div>
+                        <div class="task-check" @click="obj.status1!='已完成'?submit(obj.id):alert('已完成此項任務','warn')">{{obj.status1}}</div>
+                        <div class="task-check" @click="obj.status2!='已完成'?sendGameTask(obj.id):alert('已完成此項任務','warn')">{{obj.status2}}</div>
                         <div class="task-status">{{obj.attacked}}</div>
                     </div>
                 </div>

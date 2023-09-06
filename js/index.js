@@ -124,11 +124,12 @@ window.onload=function(){
                     .then(resp=>resp.text())
                     .then(resp=>{
                         if(resp=="success"){
+                            this.ticket(6,1);
                             this.alert("發送成功",'check')
                             btn.innerText="已完成";
+                            this.getGameTask(); // 提前
                             this.getStatus();
                             this.getGoal();
-                            this.ticket(6,1);
                         }
                         else{
                             this.alert("發送失敗",'error')
@@ -334,7 +335,7 @@ window.onload=function(){
                 this.alertOption=option;
                 this.alertTimer = setTimeout(() => {
                     this.alertMsgBlock=false;
-                }, 2500);
+                }, 3250);
             },
             addList(){ // 完成實作
                 var content = prompt('新增每日任務:');
