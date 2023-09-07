@@ -692,7 +692,7 @@ window.onload=function(){
                         else this.alert('傳送失敗','error');
                     })  
                 }
-            }
+            },
         }
     })
     function draw(prize,option){ // 完成實作
