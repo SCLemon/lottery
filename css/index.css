@@ -577,7 +577,7 @@ body{
 .gameHide{
     display: none !important;
 }
-.detail{
+.detailk{
     margin-top: 10px;
     position: absolute;
     width: auto;
@@ -586,7 +586,7 @@ body{
     color: white;
     font-size: 10px;
 }
-.detail-c{
+.detailk-c{
     margin-bottom: 5px;
     text-align: left;
 }
