@@ -577,3 +577,16 @@ body{
 .gameHide{
     display: none !important;
 }
+.detail{
+    margin-top: 10px;
+    position: absolute;
+    width: auto;
+    left:5px;
+    top:20px;
+    color: white;
+    font-size: 10px;
+}
+.detail-c{
+    margin-bottom: 5px;
+    text-align: left;
+}
