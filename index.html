@@ -130,12 +130,12 @@
                     <div class="chapter">Chapter {{gameTask.ghost.chapter}}</div>
                     <div class="detailk">
                         <div class="detailk-c"><i class="fa-regular fa-gem"></i> 每日收益：{{gameTask.gamer.money}}點/天</div>
-                        <div class="detailk-c"><i class="fa-solid fa-gun"></i> 傷害加成：{{gameTask.gamer.buff-1}}%</div>
+                        <div class="detailk-c"><i class="fa-solid fa-gun"></i> 傷害倍率：{{(gameTask.gamer.buff).toFixed(2)}}</div>
                         <div class="detailk-c"><i class="fa-regular fa-star"></i> 升等優惠：{{gameTask.gamer.discount*10}}折</div>
                     </div>
                     <div class="ghost-blood">
                         <div class="blood-progress" :style="{width:ghostBlood}"></div>
-                        <div class="remainBlood">{{gameTask.ghost.remainBlood}}/{{gameTask.ghost.blood}}</div>
+                        <div class="remainBlood">{{gameTask.ghost.remainBlood.toFixed(0)}}/{{gameTask.ghost.blood}}</div>
                     </div>
                     <div class="gamer1"></div>
                     <div class="gamer2"></div>
