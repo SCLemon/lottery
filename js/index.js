@@ -13,7 +13,7 @@ window.onload=function(){
             remainPlay:1,
             changeEnabled:false,
             autoEnabled:false,
-            openID:0,
+            openID:8,
             prob:0,
             fadded:0,
             added:0,
@@ -41,7 +41,10 @@ window.onload=function(){
             mouseEnabled:false,
             gameTask:{},
             ghostBlood:'0%',
-            ghostImg:''
+            ghostImg:'',
+            open_time:1,
+            tre_Timeout:false,
+            md:{}
         },
         methods:{
             getPermission(){ // 完成實作
@@ -693,6 +696,57 @@ window.onload=function(){
                     })  
                 }
             },
+            treasure_remain(){
+                const tre_timer = setInterval(()=>{
+                    var main =new Date(2027,6,1).getTime()-new Date().getTime();
+                    var hours =Math.floor(main/1000/3600);
+                    var minutes = Math.floor((main-hours*1000*3600)/1000/60);
+                    var seconds =Math.floor((main-minutes*1000*60-hours*1000*3600)/1000);
+                    this.open_time = hours.toString().padStart(2,'0')+":"+(minutes).toString().padStart(2,'0')+":"+(seconds==0?60:seconds).toString().padStart(2,'0');
+                    if(main<=0){
+                        clearInterval(tre_timer);
+                        this.getMd();
+                    }
+                },1000)  
+            },
+            getMd(){
+                const url='https://script.google.com/macros/s/AKfycbxZunYRMybWztlRo47hISBoaEE4PMNRW3Ik4yp0Uc8nYHUMk49tJx8D_OwR9wgAWUWzvA/exec'
+                var config={
+                    method:"get",
+                    redirect:"follow"
+                }
+                fetch(url,config)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    this.md=resp;
+                    this.tre_Timeout=true;
+                })
+            },
+            sendMd(){
+                var save;
+                if((save=prompt('存款金額：'))){
+                    this.alert('存款中，請稍後','warn');
+                    var url='https://script.google.com/macros/s/AKfycbxZunYRMybWztlRo47hISBoaEE4PMNRW3Ik4yp0Uc8nYHUMk49tJx8D_OwR9wgAWUWzvA/exec'
+                    var formData=new FormData();
+                    formData.append('key',this.key);
+                    formData.append('save',save);
+                    var config={
+                        method:"post",
+                        body:formData,
+                        redirect:"follow"
+                    }
+                    fetch(url,config)
+                    .then(resp=>resp.text())
+                    .then(resp=>{
+                        if(resp=='success'){
+                            this.alert('存款成功','check');
+                            this.getMd();
+                        }
+                        else this.alert('存款失敗','error');
+                    })  
+                }
+                else this.alert('取消存款','error');
+            }
         }
     })
     function draw(prize,option){ // 完成實作
@@ -763,6 +817,7 @@ window.onload=function(){
         vm.mouseEnabled=true;
         if(option=='change') vm.alert('刷新成功','check');
     }
+    vm.treasure_remain();
     vm.getPermission();
     vm.getStatus();
     vm.getPrize();

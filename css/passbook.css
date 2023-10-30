@@ -1,0 +1,71 @@
+.money{
+    width: 337.5px;
+    height: auto;
+    position: relative;
+}
+.money>h1{
+    font-size: 32px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 2;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.pass-all{
+    position: absolute;
+    top:-20px;
+    width: 337.5px;
+    height: 337.5px;
+    background-image: url(../img/passbook_bg.png);
+    position: relative;
+}
+.passbook{
+    position: absolute;
+    font-size: 24px;
+    top:120px;
+    left:0;
+    right:0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+.money_click{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    background-image: url(../img/pig.png);
+    top:140px;
+    left:120px;
+    margin: 0 auto;
+}
+.money_click:hover{
+    cursor: pointer;
+}
+.tre{
+    width: 200px;
+    height: 200px;
+    background-image: url(../img/tre1.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    margin-top: -60px;
+    cursor: pointer;
+}
+.open_timer{
+    width: 337.5px;
+    height: 80px;
+    line-height: 80px;
+    margin: 0 auto;
+    font-size: 32px;
+    text-align: center;
+}
+
+.money_details{
+    font-size: 18px;
+    text-align: left;
+    line-height: 2.5;
+    margin: 0 auto;
+    width: 65%;
+    margin-top: -60px;
+}

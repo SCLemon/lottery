@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/calendar.css">
     <link rel="stylesheet" href="css/roulette.css">
     <link rel="stylesheet" href="css/partner.css">
+    <link rel="stylesheet" href="css/passbook.css">
     <script src="js/vue.js"></script>
     <script src="js/index.js"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
@@ -220,6 +221,26 @@
                     <div class="psk"><i class="fa-solid fa-lock lock" v-if="!(pet.skillStatus>=8)"></i>LV35 寵物加成 20 次</div>
                 </div>
             </div>
+            <div class="money" v-if="openID==8">
+                <h1>每日儲蓄</h1>
+                <div class="pass-all">
+                    <div class="passbook">自助式投幣</div>
+                    <div class="money_click" @click="sendMd()"></div>
+                </div>
+                <div v-if="!tre_Timeout" class="tre" @click="tre_Timeout?'':alert('尚未解鎖','warn')"></div>
+                <div v-else class="money_details">
+                    <div class="md">存款起始日：{{md.money_date}}</div>
+                    <div class="md">存款次數：{{md.money_times}} 次</div>
+                    <div class="md">存款金額：{{md.money_total}} 元</div>
+                    <div class="md">點數返利：{{md.money_back}} 點</div>
+                </div>
+                <div class="open_timer">
+                    <span v-if="!tre_Timeout">{{open_time}}</span>
+                    <div v-else>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
         <i class="fa-solid fa-bars bars" id="bars" @click="openList()"></i>
         <div class="bar-list" id="bl">
@@ -249,7 +270,7 @@
         </div>
         <div class="right-col">
             <div class="lc-item" @click="col(0,'系統公告',false)"><img src="img/speaker.png" alt="" title="系統公告"></div>
-            <div class="lc-item" @click="col(0,'背包功能',false)"><img src="img/backpack.png" alt="" title="背包功能"></div>
+            <div class="lc-item" @click="col(8,'儲蓄功能',true)"><img src="img/money.png" alt="" title="儲蓄功能"></div>
             <div class="lc-item" @click="col(0,'問題回報',false)"><img src="img/report.png" alt="" title="問題回報"></div>
             <div class="lc-item" @click="changeGame('down')"><img class="right" src="img/arrow.png" alt="" title="下一個遊戲"></div>
             <div class="lc-item" @click="changeGame('up')"><img class="left" src="img/arrow.png" alt="" title="上一個遊戲"></div>
